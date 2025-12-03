@@ -5,7 +5,6 @@
   <title>김태호 | Cloud & DevOps 포트폴리오</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* ===== 전체 레이아웃 ===== */
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
@@ -23,7 +22,6 @@
       padding: 1.5rem;
     }
 
-    /* ===== 헤더 ===== */
     header {
       padding: 2.5rem 0 1.5rem;
       border-bottom: 1px solid #1f2937;
@@ -42,7 +40,6 @@
       font-size: 0.95rem;
     }
 
-    /* ===== 섹션 공통 ===== */
     section {
       margin: 2rem 0;
       padding-bottom: 1.5rem;
@@ -57,7 +54,6 @@
       color: #f9fafb;
     }
 
-    /* ===== 리스트 ===== */
     ul {
       padding-left: 1.1rem;
       margin: 0.5rem 0;
@@ -65,8 +61,6 @@
     li {
       margin-bottom: 0.35rem;
     }
-
-    /* ===== 카드 스타일 ===== */
     .card-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -90,7 +84,7 @@
       margin-bottom: 0.5rem;
     }
 
-    /* ===== 태그 ===== */
+   
     .tags {
       margin-top: 0.4rem;
       font-size: 0.8rem;
@@ -106,7 +100,7 @@
       color: #9ca3af;
     }
 
-    /* ===== 푸터 ===== */
+ 
     footer {
       text-align: center;
       font-size: 0.8rem;
@@ -114,7 +108,7 @@
       padding: 2rem 0 1rem;
     }
 
-    /* ===== 반응형 ===== */
+    
     @media (min-width: 768px) {
       .card-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -127,24 +121,26 @@
 </head>
 <body>
   <div class="container">
-    <!-- ===== 헤더 영역 ===== -->
+    
     <header>
       <div class="title">김태호</div>
       <div class="subtitle">Cloud / DevOps / Game Backend Engineer 지망</div>
       <div class="tagline">
+        온프레미스 환경에서 FalconStor Backup, Brocade SAN Switch, Dell EMC 서버 유지보수, Veeam Backup, AIX 트러블슈팅 경험을 보유하고 있으며,<br/>
         AWS 프리티어 환경에서 VPC, ECS, Terraform, GitLab/GitHub CI/CD, OpenVPN, Kubernetes 등을
         직접 구축하며 아키텍처 설계와 자동화를 학습하고 있습니다.
       </div>
     </header>
 
-    <!-- ===== 소개 ===== -->
+  
     <section id="about">
       <h2>소개</h2>
       <p>
-        인프라를 직접 손으로 만들어보고 부수면서 배우는 걸 좋아합니다.<br/>
+        인프라를 직접 손으로 만들어보고 수정하며 배우는 걸 좋아합니다.<br/>
+        온프레미스 환경에서 엔터프라이즈 백업 솔루션(FalconStor, Veeam), SAN 스위치 조닝, 서버 하드웨어 유지보수 및 AIX 운영 경험을 쌓았으며,<br/>
         AWS 상에서 3-Tier 아키텍처, VPC/NAT/OpenVPN, ECS + ALB + ECR, GitLab & GitHub를 이용한
-        Terraform 기반 자동 배포 등을 실습하고 있으며,<br/>
-        장기/방탈출/서바이벌 스타일의 웹·모바일 게임을 AWS 인프라와 연결하는 것을 목표로 하고 있습니다.
+        Terraform 기반 자동 배포 등을 실습하고 있습니다.<br/>
+        방탈출/서바이벌 스타일의 웹·모바일 게임을 AWS 인프라와 연결하는 것을 목표로 하고 있습니다.
       </p>
     </section>
 
@@ -156,6 +152,7 @@
         <li><b>Infra as Code</b>: Terraform (VPC, EC2, SG, OpenVPN, ECS, ALB 등 모듈 구성 및 remote state)</li>
         <li><b>CI/CD</b>: GitHub Actions, GitLab CI, Docker 기반 GitLab Runner</li>
         <li><b>네트워크 & 보안</b>: VPC Peering, NAT, OpenVPN, 보안 그룹, 라우팅 테이블 트러블슈팅</li>
+        <li><b>온프레미스 인프라</b>: FalconStor Backup, Veeam Backup, Brocade SAN Switch 조닝, Dell EMC 서버 유지보수, AIX 운영 및 트러블슈팅</li>
         <li><b>개발</b>: Python, C#, Unity(2D), HTML/CSS/JavaScript</li>
       </ul>
     </section>
@@ -251,6 +248,30 @@
           </div>
         </div>
 
+        <!-- 프로젝트 5: 온프레미스 인프라 운영 -->
+        <div class="card">
+          <h3>온프레미스 엔터프라이즈 인프라 운영</h3>
+          <div class="meta">온프레미스 환경 | 실무 경험</div>
+          <p>
+            엔터프라이즈 환경에서 백업 솔루션 운영, SAN 스토리지 네트워크 관리,<br/>
+            서버 하드웨어 유지보수 및 유닉스 시스템 트러블슈팅 경험을 보유하고 있습니다.
+          </p>
+          <ul>
+            <li>FalconStor Backup 솔루션 운영 및 복구 작업 수행</li>
+            <li>Veeam Backup을 통한 가상화 환경 백업 관리</li>
+            <li>Brocade SAN Switch 조닝 구성 및 스토리지 네트워크 관리</li>
+            <li>Dell EMC 서버 하드웨어 유지보수 및 펌웨어 업데이트</li>
+            <li>AIX 시스템 운영 및 성능 튜닝, 장애 트러블슈팅</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">FalconStor</span>
+            <span class="tag">Veeam</span>
+            <span class="tag">SAN Switch</span>
+            <span class="tag">Dell EMC</span>
+            <span class="tag">AIX</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -258,6 +279,10 @@
     <section id="experience">
       <h2>학습 및 실습 경험 정리</h2>
       <ul>
+        <li>온프레미스 환경: FalconStor Backup 정책 구성 및 복구 테스트, Veeam Backup 작업 스케줄링 및 모니터링</li>
+        <li>Brocade SAN Switch Zone 구성 및 WWN 기반 LUN 마스킹, 스토리지 네트워크 장애 대응</li>
+        <li>Dell EMC PowerEdge 시리즈 서버 하드웨어 점검, RAID 구성, iDRAC를 통한 원격 관리</li>
+        <li>AIX 시스템 부팅 문제 해결, 파일시스템 관리, 성능 모니터링 및 튜닝</li>
         <li>AWS 프리티어 환경에서 비용을 고려한 아키텍처 실습 (NAT GW vs NAT Instance 등)</li>
         <li>VPC 피어링, 라우팅 테이블, CIDR 중복 문제 트러블슈팅</li>
         <li>OpenVPN 직접 설치 및 Amazon Linux에서 수동 구성</li>
