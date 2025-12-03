@@ -1,0 +1,46 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.2.3">
+  <diagram name="페이지-1" id="n_gcmJya4B3ntOlzJ1y7">
+    <mxGraphModel dx="1042" dy="562" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-16" edge="1" parent="1" source="JgcZBkg7czBMPy0WgVaT-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="JgcZBkg7czBMPy0WgVaT-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-2" parent="1" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=#232F3E;fillColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.virtual_tape_library;" value="Virtual tape&#xa;library" vertex="1">
+          <mxGeometry height="80" width="80" x="345" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-4" parent="1" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/web_server.svg;" value="" vertex="1">
+          <mxGeometry height="50" width="40" x="180" y="42.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-5" parent="1" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/sql_server.svg;" value="" vertex="1">
+          <mxGeometry height="55" width="42.35" x="290" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-6" parent="1" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/database_server.svg;" value="" vertex="1">
+          <mxGeometry height="50" width="41" x="410" y="42.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-7" parent="1" style="image;aspect=fixed;perimeter=ellipsePerimeter;html=1;align=center;shadow=0;dashed=0;spacingTop=3;image=img/lib/active_directory/windows_server_2.svg;" value="" vertex="1">
+          <mxGeometry height="50" width="40" x="530" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-17" edge="1" parent="1" source="JgcZBkg7czBMPy0WgVaT-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="JgcZBkg7czBMPy0WgVaT-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-8" parent="1" style="image;html=1;image=img/lib/clip_art/computers/Server_128x128.png" value="Backup Server" vertex="1">
+          <mxGeometry height="70" width="70" x="350" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-9" parent="1" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;strokeColor=#232F3E;fillColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.tape_storage;" value="Tape storage" vertex="1">
+          <mxGeometry height="60" width="60" x="580" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-18" edge="1" parent="1" source="JgcZBkg7czBMPy0WgVaT-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="JgcZBkg7czBMPy0WgVaT-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-12" parent="1" style="whiteSpace=wrap;html=1;fillColor=none;strokeColor=#6c8ebf;opacity=30;strokeWidth=4;" value="" vertex="1">
+          <mxGeometry height="120" width="510" x="130" y="7.5" as="geometry" />
+        </mxCell>
+        <mxCell id="JgcZBkg7czBMPy0WgVaT-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Client Server" vertex="1">
+          <mxGeometry height="30" width="100" x="130" y="7.5" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

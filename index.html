@@ -200,43 +200,40 @@
 
   
     <section id="about">
-      <h2 class="project-section-header collapsed" onclick="toggleSection('about')" style="margin: 0 0 1rem 0;">
-        <span class="toggle-icon">▼</span>
-        소개
-      </h2>
-      <div class="project-section-content collapsed" id="about-content">
-        <p>
-          인프라를 직접 손으로 만들어보고 수정하며 배우는 걸 좋아합니다.<br/>
-          온프레미스 환경에서 엔터프라이즈 백업 솔루션(FalconStor, Veeam), SAN 스위치 조닝, 서버 하드웨어 유지보수 및 AIX 운영 경험을 쌓았으며,<br/>
-          VMware와 LocalStack을 활용하여 로컬 환경에서 3-Tier 아키텍처를 구축하고,<br/>
-          AWS 상에서 3-Tier 아키텍처, VPC/NAT/OpenVPN, ECS + ALB + ECR, GitLab & GitHub를 이용한
-          Terraform 기반 자동 배포 등을 실습하고 있습니다.<br/>
-          방탈출/서바이벌 스타일의 웹·모바일 게임을 AWS 인프라와 연결하는 것을 목표로 하고 있습니다.
-        </p>
+      <h2>소개</h2>
+      <p>
+        인프라를 직접 손으로 만들어보고 수정하며 배우는 걸 좋아합니다.<br/>
+        온프레미스 환경에서 엔터프라이즈 백업 솔루션(FalconStor, Veeam), SAN 스위치 조닝, 서버 하드웨어 유지보수 및 AIX 운영 경험을 쌓았으며,<br/>
+        VMware와 LocalStack을 활용하여 로컬 환경에서 3-Tier 아키텍처를 구축하고,<br/>
+        AWS 상에서 3-Tier 아키텍처, VPC/NAT/OpenVPN, ECS + ALB + ECR, GitLab & GitHub를 이용한
+        Terraform 기반 자동 배포 등을 실습하고 있습니다.<br/>
+        방탈출/서바이벌 스타일의 웹·모바일 게임을 AWS 인프라와 연결하는 것을 목표로 하고 있습니다.
+      </p>
 
-        <!-- ===== 경력사항 ===== -->
-        <h3 style="font-size: 1.2rem; margin: 2rem 0 1rem; color: #f9fafb;">경력사항</h3>
-        <div class="career-item">
-          <div class="career-company">주식회사엔터아이티</div>
-          <div class="career-period">2020/12/14 ~ 2025/04/01</div>
-          <div class="career-role">정보보안 및 인프라 운영</div>
-        </div>
-        <div class="career-item">
-          <div class="career-company">대한상공회의소 경기인력개발원</div>
-          <div class="career-period">2020/04/07 ~ 2021/02/01</div>
-          <div class="career-role">정보보안실무</div>
-        </div>
+      <!-- ===== 기술 스택 ===== -->
+      <h3 style="font-size: 1.2rem; margin: 2rem 0 1rem; color: #f9fafb;">기술 스택</h3>
+      <ul>
+        <li><b>AWS</b>: VPC, Subnet, IGW, NAT Gateway/Instance, EC2, ALB, ECS(EC2 & Fargate), ECR, S3, CloudFront, DynamoDB</li>
+        <li><b>Infra as Code</b>: Terraform (VPC, EC2, SG, OpenVPN, ECS, ALB 등 모듈 구성 및 remote state)</li>
+        <li><b>CI/CD</b>: GitHub Actions, GitLab CI, Docker 기반 GitLab Runner</li>
+        <li><b>네트워크 & 보안</b>: VPC Peering, NAT, OpenVPN, 보안 그룹, 라우팅 테이블 트러블슈팅</li>
+        <li><b>가상화 & 로컬 개발</b>: VMware 17.5 Pro, LocalStack(AWS 서비스 에뮬레이션), Docker</li>
+        <li><b>온프레미스 인프라</b>: FalconStor Backup, Veeam Backup, Brocade SAN Switch 조닝, Dell EMC 서버 유지보수, AIX 운영 및 트러블슈팅</li>
+      </ul>
+    </section>
 
-        <!-- ===== 기술 스택 ===== -->
-        <h3 style="font-size: 1.2rem; margin: 2rem 0 1rem; color: #f9fafb;">기술 스택</h3>
-        <ul>
-          <li><b>AWS</b>: VPC, Subnet, IGW, NAT Gateway/Instance, EC2, ALB, ECS(EC2 & Fargate), ECR, S3, CloudFront, DynamoDB</li>
-          <li><b>Infra as Code</b>: Terraform (VPC, EC2, SG, OpenVPN, ECS, ALB 등 모듈 구성 및 remote state)</li>
-          <li><b>CI/CD</b>: GitHub Actions, GitLab CI, Docker 기반 GitLab Runner</li>
-          <li><b>네트워크 & 보안</b>: VPC Peering, NAT, OpenVPN, 보안 그룹, 라우팅 테이블 트러블슈팅</li>
-          <li><b>가상화 & 로컬 개발</b>: VMware 17.5 Pro, LocalStack(AWS 서비스 에뮬레이션), Docker</li>
-          <li><b>온프레미스 인프라</b>: FalconStor Backup, Veeam Backup, Brocade SAN Switch 조닝, Dell EMC 서버 유지보수, AIX 운영 및 트러블슈팅</li>
-        </ul>
+    <!-- ===== 경력사항 ===== -->
+    <section id="career">
+      <h2>경력사항</h2>
+      <div class="career-item">
+        <div class="career-company">주식회사엔터아이티</div>
+        <div class="career-period">2020/12/14 ~ 2025/04/01</div>
+        <div class="career-role">정보보안 및 인프라 운영</div>
+      </div>
+      <div class="career-item">
+        <div class="career-company">대한상공회의소 경기인력개발원</div>
+        <div class="career-period">2020/04/07 ~ 2021/02/01</div>
+        <div class="career-role">정보보안실무</div>
       </div>
     </section>
 
@@ -254,7 +251,7 @@
 
         <!-- 프로젝트 1: ECS + ALB + Path Routing -->
         <div class="card">
-          <h3><a href="project-ecs-alb.html">AWS ECS + ALB Path 기반 라우팅 구축</a></h3>
+          <h3><a href="cloud/project-ecs-alb.html">AWS ECS + ALB Path 기반 라우팅 구축</a></h3>
           <div class="meta">2025 | 개인 학습 프로젝트</div>
           <p>
             ECR에 저장된 여러 Docker 이미지를 ECS 서비스(EC2/Fargate 혼합)로 올리고,<br/>
@@ -278,7 +275,7 @@
 
         <!-- 프로젝트 2: Terraform VPC 모듈 -->
         <div class="card">
-          <h3><a href="project-terraform-vpc.html">Terraform 기반 VPC & 네트워크 모듈</a></h3>
+          <h3><a href="cloud/project-terraform-vpc.html">Terraform 기반 VPC & 네트워크 모듈</a></h3>
           <div class="meta">2025 | 개인 인프라 랩</div>
           <p>
             학습용이지만 실무형 구조를 목표로 VPC, 공용/사설 서브넷, NAT GW, IGW, 보안 그룹 등을
@@ -299,7 +296,7 @@
 
         <!-- 프로젝트 3: GitLab CI + Terraform -->
         <div class="card">
-          <h3><a href="project-gitlab-terraform.html">GitLab CI로 AWS Terraform 자동 배포</a></h3>
+          <h3><a href="cloud/project-gitlab-terraform.html">GitLab CI로 AWS Terraform 자동 배포</a></h3>
           <div class="meta">2025 | CI/CD 실습</div>
           <p>
             GitLab CE + GitLab Runner(Docker executor)를 구축하고, Terraform 코드를<br/>
@@ -319,7 +316,7 @@
 
         <!-- 프로젝트 4: 게임 + AWS 백엔드 -->
         <div class="card">
-          <h3><a href="project-game-backend.html">웹/모바일 게임 백엔드 AWS 연동 (진행 중)</a></h3>
+          <h3><a href="cloud/project-game-backend.html">웹/모바일 게임 백엔드 AWS 연동 (진행 중)</a></h3>
           <div class="meta">진행 중</div>
           <p>
             HTML/JS 또는 Unity로 만든 간단한 게임의 점수/랭킹 데이터를<br/>
@@ -340,7 +337,7 @@
 
         <!-- 프로젝트 5: VMware + LocalStack 3-Tier -->
         <div class="card">
-          <h3><a href="project-vmware-localstack.html">VMware + LocalStack 기반 3-Tier 아키텍처 구축</a></h3>
+          <h3><a href="cloud/project-vmware-localstack.html">VMware + LocalStack 기반 3-Tier 아키텍처 구축</a></h3>
           <div class="meta">2025 | 로컬 학습 환경</div>
           <p>
             VMware 17.5 Pro를 노트북에 설치하고, LocalStack을 이용하여<br/>
@@ -375,7 +372,7 @@
 
         <!-- 프로젝트 6: FalconStor Backup -->
         <div class="card">
-          <h3><a href="project-falconstor.html">FalconStor Backup 솔루션 운영</a></h3>
+          <h3><a href="onprem/project-falconstor.html">FalconStor Backup 솔루션 운영</a></h3>
           <div class="meta">온프레미스 환경 | 실무 경험</div>
           <p>
             엔터프라이즈 환경에서 FalconStor Backup 솔루션을 운영하며<br/>
@@ -396,7 +393,7 @@
 
         <!-- 프로젝트 7: Veeam Backup -->
         <div class="card">
-          <h3><a href="project-veeam.html">Veeam Backup 솔루션 운영</a></h3>
+          <h3><a href="onprem/project-veeam.html">Veeam Backup 솔루션 운영</a></h3>
           <div class="meta">온프레미스 환경 | 실무 경험</div>
           <p>
             가상화 환경(VMware, Hyper-V)에서 Veeam Backup을 활용하여<br/>
@@ -417,7 +414,7 @@
 
         <!-- 프로젝트 8: Storage -->
         <div class="card">
-          <h3><a href="project-storage.html">스토리지 시스템 운영 및 관리</a></h3>
+          <h3><a href="onprem/project-storage.html">스토리지 시스템 운영 및 관리</a></h3>
           <div class="meta">온프레미스 환경 | 실무 경험</div>
           <p>
             SAN 스토리지 네트워크 및 스토리지 시스템을 관리하며<br/>
@@ -439,7 +436,7 @@
 
         <!-- 프로젝트 9: Server -->
         <div class="card">
-          <h3><a href="project-server.html">서버 하드웨어 및 시스템 운영</a></h3>
+          <h3><a href="onprem/project-server.html">서버 하드웨어 및 시스템 운영</a></h3>
           <div class="meta">온프레미스 환경 | 실무 경험</div>
           <p>
             서버 하드웨어 유지보수 및 유닉스 시스템 운영을 통해<br/>
