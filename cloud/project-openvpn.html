@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AWS EC2 기반 OpenVPN Server 구축 | 김태호 포트폴리오</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #0f172a;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+    a { color: #38bdf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    header {
+      padding: 2rem 0 1rem;
+      border-bottom: 1px solid #1f2937;
+      margin-bottom: 2rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+    .back-link:hover {
+      color: #38bdf8;
+    }
+    h1 {
+      font-size: 2rem;
+      margin: 0 0 0.5rem 0;
+      color: #f9fafb;
+    }
+    .meta {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+
+    .content {
+      margin: 2rem 0;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+      color: #f9fafb;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 0.5rem;
+    }
+    h3 {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #e5e7eb;
+    }
+    p {
+      margin: 1rem 0;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+      margin: 0.75rem 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    code {
+      background: #1f2937;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-size: 0.9em;
+      color: #60a5fa;
+    }
+    .tags {
+      margin: 1.5rem 0;
+    }
+    .tag {
+      display: inline-block;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      color: #9ca3af;
+      font-size: 0.85rem;
+    }
+    .highlight-box {
+      background: #020617;
+      border-left: 3px solid #38bdf8;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="../index.html" class="back-link">← 포트폴리오로 돌아가기</a>
+      <h1>AWS EC2(Free Tier) 기반 OpenVPN Server 구축</h1>
+      <div class="meta">2025 | Marketplace AMI 없이, Amazon Linux 2023 기반 수동 설치</div>
+    </header>
+
+    <div class="content">
+      <section>
+        <h2>프로젝트 개요</h2>
+        <p>
+          AWS 프리티어 환경에서 비용을 최소화하면서, OpenVPN Access Server(유료 AMI)를 사용하지 않고
+          Amazon Linux 2023 + Easy-RSA + OpenVPN 조합으로 VPN 서버를 직접 구축한 프로젝트입니다.
+        </p>
+        <p>
+          Marketplace의 유료 OpenVPN AMI 대신 오픈소스 OpenVPN을 직접 설치하여 구성함으로써
+          비용 없이 VPN 서버를 구축하고, 실무적인 리눅스 서버 운영 및 네트워크 구성 경험을 쌓았습니다.
+        </p>
+      </section>
+
+      <section>
+        <h2>주요 구현 내용</h2>
+        
+        <h3>1. Amazon Linux 2023 환경 구성</h3>
+        <ul>
+          <li>AWS EC2 Free Tier 인스턴스 생성 및 접속</li>
+          <li>Amazon Linux 2023 기본 패키지 업데이트</li>
+          <li>필수 패키지 설치 (OpenVPN, Easy-RSA 등)</li>
+        </ul>
+
+        <h3>2. Easy-RSA 기반 PKI 구축</h3>
+        <div class="highlight-box">
+          <ul>
+            <li>Easy-RSA 설치 및 PKI 디렉토리 초기화</li>
+            <li>CA(Certificate Authority) 인증서 생성</li>
+            <li>서버 인증서 및 키 생성</li>
+            <li>클라이언트 인증서 및 키 생성</li>
+            <li>Diffie-Hellman 키 교환 파일 생성</li>
+          </ul>
+        </div>
+
+        <h3>3. OpenVPN 서버 구성</h3>
+        <ul>
+          <li>OpenVPN 서버 설정 파일 구성 (<code>server.conf</code>)</li>
+          <li>TUN/TAP 인터페이스 구성</li>
+          <li>VPN 클라이언트 IP 대역 설정 (예: 10.8.0.0/24)</li>
+          <li>암호화 및 인증 알고리즘 설정</li>
+          <li>OpenVPN 서비스 데몬화 및 자동 시작 설정</li>
+        </ul>
+
+        <h3>4. nftables 기반 NAT 설정</h3>
+        <ul>
+          <li>nftables 방화벽 규칙 구성</li>
+          <li>NAT(Network Address Translation) 설정을 통한 VPN 클라이언트 인터넷 트래픽 라우팅</li>
+          <li>IP 포워딩 활성화</li>
+          <li>필요한 포트(1194/UDP 등) 오픈</li>
+          <li>보안 그룹 규칙 설정</li>
+        </ul>
+
+        <h3>5. 클라이언트 자동화 스크립트</h3>
+        <ul>
+          <li>클라이언트 인증서 자동 생성 스크립트 작성</li>
+          <li>OVPN 설정 파일 자동 생성 스크립트</li>
+          <li>클라이언트별 고유 인증서 발급 프로세스 자동화</li>
+          <li>생성된 .ovpn 파일 검증</li>
+        </ul>
+
+        <h3>6. S3를 통한 OVPN 파일 배포</h3>
+        <div class="highlight-box">
+          <ul>
+            <li>AWS CLI를 통한 S3 버킷 생성 및 구성</li>
+            <li>생성된 .ovpn 파일을 S3에 업로드</li>
+            <li>S3 버킷 정책 설정을 통한 안전한 다운로드 제공</li>
+            <li>외부에서 OVPN 파일 다운로드 및 VPN 연결 테스트</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>구현 세부사항</h2>
+        
+        <h3>네트워크 구성</h3>
+        <ul>
+          <li>EC2 인스턴스 퍼블릭 IP 및 Elastic IP 설정</li>
+          <li>보안 그룹에서 UDP 1194 포트 인바운드 허용</li>
+          <li>VPC 라우팅 테이블 확인 및 설정</li>
+        </ul>
+
+        <h3>보안 구성</h3>
+        <ul>
+          <li>PKI 기반 인증서 인증으로 강력한 보안 구현</li>
+          <li>암호화 알고리즘 최신 표준 적용</li>
+          <li>서버 키 및 인증서 안전한 관리</li>
+        </ul>
+
+        <h3>자동화</h3>
+        <ul>
+          <li>Bash 스크립트를 통한 클라이언트 인증서 발급 자동화</li>
+          <li>AWS CLI를 통한 S3 업로드 자동화</li>
+          <li>운영 효율성 향상을 위한 스크립트 최적화</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>프로젝트 결과 및 성과</h2>
+        <ul>
+          <li><b>비용 0원 달성</b>: OpenVPN 유료 AMI 없이 무료로 VPN 서버 구축</li>
+          <li><b>최신 환경 적용</b>: Amazon Linux 2023 + nftables 최신 기술 스택 활용</li>
+          <li><b>인증서 기반 보안</b>: Easy-RSA PKI 구성을 통한 강력한 보안 구현</li>
+          <li><b>운영 자동화</b>: 스크립트를 통한 클라이언트 관리 효율성 향상</li>
+          <li><b>VPN 접속 테스트 성공</b>: 실제 VPN 연결 및 인터넷 트래픽 라우팅 검증</li>
+          <li><b>S3 기반 배포</b>: 안전한 클라이언트 파일 배포 시스템 구축</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>학습 목표 및 경험</h2>
+        <ul>
+          <li>AWS EC2 프리티어 환경에서 비용 최적화 인프라 구성 경험</li>
+          <li>PKI(Public Key Infrastructure) 기반 인증 시스템 구축 및 이해</li>
+          <li>OpenVPN 서버 구성 및 운영 방법 학습</li>
+          <li>nftables를 통한 리눅스 방화벽 및 NAT 구성 경험</li>
+          <li>VPN 네트워크 아키텍처 이해 및 트래픽 라우팅 원리 학습</li>
+          <li>AWS CLI 및 S3를 활용한 파일 배포 자동화 경험</li>
+          <li>리눅스 서버 관리 및 네트워크 구성 실무 경험 축적</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>기술 스택</h2>
+        <div class="tags">
+          <span class="tag">AWS EC2</span>
+          <span class="tag">Amazon Linux 2023</span>
+          <span class="tag">OpenVPN</span>
+          <span class="tag">Easy-RSA</span>
+          <span class="tag">PKI</span>
+          <span class="tag">nftables</span>
+          <span class="tag">NAT</span>
+          <span class="tag">S3</span>
+          <span class="tag">AWS CLI</span>
+          <span class="tag">Bash Script</span>
+          <span class="tag">VPN</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>프로젝트 발표 자료</h2>
+        <div style="margin: 2rem 0;">
+          <div id="pdfControls" style="margin-bottom: 1rem; text-align: center; display: none;">
+            <button onclick="prevPage()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">이전</button>
+            <span id="pageInfo" style="margin: 0 1rem; color: #9ca3af;">페이지: <span id="pageNum">1</span> / <span id="pageCount">-</span></span>
+            <button onclick="nextPage()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">다음</button>
+            <button onclick="zoomOut()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">축소</button>
+            <button onclick="zoomIn()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">확대</button>
+          </div>
+          <div style="overflow: hidden; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 1.5rem; background: #020617; text-align: center; min-height: 900px; display: flex; justify-content: center; align-items: flex-start;">
+            <canvas id="pdfCanvas" style="display: none; max-width: none; width: auto; height: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></canvas>
+            <div id="pdfLoading" style="padding: 4rem; color: #9ca3af;">
+              <p>PDF를 로드하는 중...</p>
+            </div>
+            <div id="pdfError" style="display: none; padding: 4rem; color: #9ca3af; max-width: 600px; margin: 0 auto;">
+              <p style="margin-bottom: 1rem; color: #ef4444; font-weight: bold;">로컬 파일 시스템에서는 PDF.js를 사용할 수 없습니다.</p>
+              <p style="margin-bottom: 1rem;">PDF를 보려면 다음 중 하나를 선택하세요:</p>
+              <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
+                <li>로컬 웹 서버를 실행하세요 (Python: <code>python -m http.server</code> 또는 Node.js: <code>npx serve</code>)</li>
+                <li>GitHub Pages에 배포하세요</li>
+              </ul>
+              <p style="margin-top: 1.5rem;">
+                <a href="../PPT/EC2(amzl2023)+Openvpn.pdf" target="_blank" style="color: #38bdf8; text-decoration: underline; font-weight: bold;">PDF를 새 탭에서 열기</a>
+              </p>
+            </div>
+          </div>
+          <p style="margin-top: 1rem; text-align: center;">
+            <a href="../PPT/EC2(amzl2023)+Openvpn.pdf" target="_blank" style="color: #38bdf8;">PDF 새 탭에서 열기</a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // HTTP/HTTPS 환경에서만 PDF.js 사용 (로컬 파일 시스템에서는 안내 메시지)
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+      // 웹 서버 환경에서만 PDF.js 로드
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      script.onload = function() {
+        let pdfDoc = null;
+        let pageNum = 1;
+        let pageRendering = false;
+        let pageNumPending = null;
+        let scale = 1.0;
+        const canvas = document.getElementById('pdfCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = canvas.parentElement;
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        function calculateScale(pageWidth, pageHeight) {
+          // 컨테이너 너비와 높이를 고려하여 적절한 스케일 계산
+          const containerWidth = container.clientWidth - 60; // 패딩 고려
+          const containerHeight = container.clientHeight - 60;
+          
+          const scaleX = containerWidth / pageWidth;
+          const scaleY = containerHeight / pageHeight;
+          
+          // 작은 값을 선택하여 전체 페이지가 보이도록 함
+          return Math.min(scaleX, scaleY, 3.0); // 최대 3배까지만
+        }
+
+        function renderPage(num) {
+          pageRendering = true;
+          pdfDoc.getPage(num).then(function(page) {
+            // 첫 렌더링 시 화면 크기에 맞춰 스케일 계산
+            if (num === 1 && scale === 1.0) {
+              const initialViewport = page.getViewport({scale: 1.0});
+              scale = calculateScale(initialViewport.width, initialViewport.height);
+            }
+            
+            const viewport = page.getViewport({scale: scale});
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            const renderContext = {
+              canvasContext: ctx,
+              viewport: viewport
+            };
+            const renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function() {
+              pageRendering = false;
+              if (pageNumPending !== null) {
+                renderPage(pageNumPending);
+                pageNumPending = null;
+              }
+            });
+          });
+
+          document.getElementById('pageNum').textContent = num;
+        }
+
+        function queueRenderPage(num) {
+          if (pageRendering) {
+            pageNumPending = num;
+          } else {
+            renderPage(num);
+          }
+        }
+
+        window.prevPage = function() {
+          if (pageNum <= 1) return;
+          pageNum--;
+          queueRenderPage(pageNum);
+        };
+
+        window.nextPage = function() {
+          if (pageNum >= pdfDoc.numPages) return;
+          pageNum++;
+          queueRenderPage(pageNum);
+        };
+
+        window.zoomIn = function() {
+          scale += 0.25;
+          renderPage(pageNum);
+        };
+
+        window.zoomOut = function() {
+          if (scale <= 0.3) return;
+          scale -= 0.25;
+          renderPage(pageNum);
+        };
+
+        // 화면 크기 변경 시 스케일 재조정
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function() {
+            if (pdfDoc) {
+              pdfDoc.getPage(pageNum).then(function(page) {
+                const initialViewport = page.getViewport({scale: 1.0});
+                scale = calculateScale(initialViewport.width, initialViewport.height);
+                renderPage(pageNum);
+              });
+            }
+          }, 250);
+        });
+
+        // PDF를 fetch로 로드 (파일명에 괄호와 특수문자가 있어 인코딩 필요)
+        const pdfUrl = '../PPT/EC2(amzl2023)+Openvpn.pdf';
+        fetch(pdfUrl)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('PDF 파일을 찾을 수 없습니다.');
+            }
+            return response.arrayBuffer();
+          })
+          .then(data => {
+            return pdfjsLib.getDocument({ data: data }).promise;
+          })
+          .then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            document.getElementById('pageCount').textContent = pdfDoc.numPages;
+            // PDF.js 성공 시 canvas 표시
+            document.getElementById('pdfLoading').style.display = 'none';
+            document.getElementById('pdfError').style.display = 'none';
+            canvas.style.display = 'block';
+            document.getElementById('pdfControls').style.display = 'block';
+            renderPage(pageNum);
+          })
+          .catch(function(error) {
+            console.error('PDF.js 로드 오류:', error);
+            // PDF.js 실패 시 에러 메시지 표시
+            document.getElementById('pdfLoading').style.display = 'none';
+            document.getElementById('pdfError').style.display = 'block';
+          });
+      };
+      document.head.appendChild(script);
+    } else {
+      // file:// 프로토콜에서는 PDF.js를 사용할 수 없음
+      console.log('로컬 파일 시스템에서는 PDF.js를 사용할 수 없습니다.');
+      document.getElementById('pdfLoading').style.display = 'none';
+      document.getElementById('pdfError').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
+
