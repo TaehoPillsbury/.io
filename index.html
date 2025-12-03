@@ -335,27 +335,30 @@
           </div>
         </div>
 
-        <!-- 프로젝트 5: VMware + LocalStack 3-Tier -->
+        <!-- 프로젝트 5: LocalStack 기반 로컬 클라우드 -->
         <div class="card">
-          <h3><a href="cloud/project-vmware-localstack.html">VMware + LocalStack 기반 3-Tier 아키텍처 구축</a></h3>
+          <h3><a href="cloud/project-vmware-localstack.html">LocalStack 기반 로컬 클라우드 실습 프로젝트</a></h3>
           <div class="meta">2025 | 로컬 학습 환경</div>
           <p>
-            VMware 17.5 Pro를 노트북에 설치하고, LocalStack을 이용하여<br/>
-            AWS 서비스를 에뮬레이션하여 로컬 환경에서 3-Tier 아키텍처를 구축했습니다.
+            LocalStack을 활용해 AWS와 거의 동일한 클라우드 환경을 재현하고,<br/>
+            S3·Lambda·API Gateway·DynamoDB 등 주요 AWS 서비스를 비용 없이 실습할 수 있는
+            로컬 클라우드 플랫폼을 구축했습니다.
           </p>
           <ul>
-            <li>VMware 17.5 Pro 설치 및 가상머신 환경 구성</li>
-            <li>LocalStack Docker 컨테이너로 AWS 서비스 에뮬레이션 (EC2, VPC, S3, DynamoDB 등)</li>
-            <li>3-Tier 아키텍처: Web Tier, Application Tier, Database Tier 구성</li>
-            <li>비용 없이 AWS 서비스 동작 방식 학습 및 테스트 환경 구축</li>
-            <li>Terraform 또는 AWS CLI를 통한 LocalStack 환경 자동화</li>
+            <li>Docker Compose로 LocalStack 클러스터 구축</li>
+            <li>S3 정적 웹사이트 호스팅 및 API Gateway + Lambda + DynamoDB 연동</li>
+            <li>서버리스 아키텍처 패턴 구현 및 Kubernetes(k3s) 통합</li>
+            <li>Terraform을 통한 IaC 실습 및 전체 파이프라인 구축</li>
           </ul>
           <div class="tags">
             <span class="tag">VMware</span>
             <span class="tag">LocalStack</span>
-            <span class="tag">3-Tier</span>
-            <span class="tag">Docker</span>
+            <span class="tag">S3</span>
+            <span class="tag">Lambda</span>
+            <span class="tag">API Gateway</span>
+            <span class="tag">DynamoDB</span>
             <span class="tag">Terraform</span>
+            <span class="tag">Serverless</span>
           </div>
         </div>
 

@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>VMware + LocalStack 기반 3-Tier 아키텍처 구축 | 김태호 포트폴리오</title>
+  <title>LocalStack 기반 로컬 클라우드 실습 프로젝트 | 김태호 포트폴리오</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
@@ -106,115 +106,126 @@
   <div class="container">
     <header>
       <a href="../index.html" class="back-link">← 포트폴리오로 돌아가기</a>
-      <h1>VMware + LocalStack 기반 3-Tier 아키텍처 구축</h1>
+      <h1>LocalStack 기반 로컬 클라우드 실습 프로젝트</h1>
       <div class="meta">2025 | 로컬 학습 환경</div>
     </header>
 
     <div class="content">
       <section>
-        <h2>프로젝트 개요</h2>
+        <h2>프로젝트 목표</h2>
         <p>
-          비용 부담 없이 AWS 서비스를 학습하고 테스트하기 위해 VMware 17.5 Pro를 노트북에 설치하고,
-          LocalStack을 활용하여 로컬 환경에서 AWS 서비스를 에뮬레이션하여 3-Tier 아키텍처를 구축했습니다.
+          로컬 PC와 VMware 기반 가상환경에서 LocalStack을 활용해 AWS와 거의 동일한 클라우드 환경을 재현하고,
+          S3·Lambda·API Gateway·DynamoDB·IAM 등 주요 AWS 서비스를 비용 없이 실습할 수 있는
+          로컬 클라우드 플랫폼을 구축하는 것입니다.
         </p>
         <p>
-          LocalStack은 실제 AWS 서비스와 유사한 인터페이스를 제공하므로, 실제 AWS 환경으로
-          전환하기 전에 로컬에서 충분히 학습하고 테스트할 수 있는 환경을 제공합니다.
+          LocalStack 기반의 로컬 클라우드 인프라를 구축하여 API Gateway · Lambda · DynamoDB · S3 등
+          AWS 서버리스 아키텍처를 실제 AWS 없이 완전하게 구현하고 테스트할 수 있는 실무형 개발 환경을 완성했습니다.
         </p>
       </section>
 
       <section>
-        <h2>환경 구성</h2>
+        <h2>전체 아키텍처</h2>
         
-        <h3>VMware 17.5 Pro</h3>
+        <h3>구성 요소</h3>
+        <div class="highlight-box">
+          <ul>
+            <li><b>LocalStack (컨테이너)</b>: AWS API Gateway, Lambda, S3, DynamoDB 등 Full AWS API 에뮬레이션</li>
+            <li><b>LocalStack Client (컨테이너)</b>: awscli / terraform / curl 테스트 전용</li>
+            <li><b>로컬 테스트 웹페이지 (S3 정적 호스팅)</b>: JS에서 Lambda + API Gateway 호출</li>
+            <li><b>Lambda 함수 (Python)</b>: DynamoDB Local에 데이터 저장, Kubernetes 클러스터 조작(옵션) 등 복잡한 기능도 로컬에서 테스트</li>
+            <li><b>DynamoDB Local 테이블</b>: 웹 애플리케이션 사용자 데이터 저장</li>
+            <li><b>API Gateway</b>: S3 정적 웹페이지와 Lambda 연결</li>
+          </ul>
+        </div>
+
+        <h3>VMware 환경</h3>
         <ul>
           <li>노트북에 VMware 17.5 Pro 설치 및 라이센스 구성</li>
           <li>Linux 가상머신 생성 및 네트워크 설정</li>
-          <li>호스트와 가상머신 간 네트워크 통신 구성</li>
-          <li>스냅샷 기능을 활용한 환경 백업 및 복원</li>
+          <li>Docker Compose로 LocalStack + Client 환경 구성</li>
+          <li>포트 매핑 및 서비스 활성화 (S3, Lambda, DynamoDB, APIGW 등)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>주요 구현 기능</h2>
+        
+        <h3>1. LocalStack 클러스터 구축</h3>
+        <ul>
+          <li>Docker Compose로 LocalStack + Client 환경 구성</li>
+          <li>포트 매핑 및 서비스 활성화 (S3, Lambda, DynamoDB, APIGW 등)</li>
+          <li>AWS CLI endpoint를 LocalStack으로 변경하여 테스트</li>
+          <li><code>aws --endpoint-url=http://localhost:4566 s3 ls</code> 명령어로 LocalStack S3 접근</li>
         </ul>
 
-        <h3>LocalStack</h3>
+        <h3>2. S3 정적 웹사이트 호스팅</h3>
         <div class="highlight-box">
           <ul>
-            <li><b>Docker 컨테이너</b>: LocalStack을 Docker로 실행</li>
-            <li><b>지원 서비스</b>: EC2, VPC, S3, DynamoDB, Lambda, API Gateway 등</li>
-            <li><b>포트 매핑</b>: 각 서비스별 포트 설정 및 접근 구성</li>
-            <li><b>데이터 영속성</b>: Docker 볼륨을 통한 데이터 저장</li>
+            <li>웹파일(index.html, script.js 등)을 LocalStack S3에 업로드</li>
+            <li>AWS S3와 동일한 방식으로 버킷 정책, 정적 호스팅 설정</li>
+            <li>웹에서 API Gateway 호출 → Lambda → DynamoDB 로직 구현</li>
           </ul>
         </div>
+
+        <h3>3. API Gateway + Lambda + DynamoDB 연동</h3>
+        <ul>
+          <li>Lambda(Python 3.9) 함수를 ZIP 배포</li>
+          <li>API Gateway REST API 생성</li>
+          <li><code>/create-user</code>, <code>/create-container</code> 같은 실제 API 구조 설계</li>
+          <li>DynamoDB Local에 데이터 저장/조회 구현</li>
+          <li>예: <code>table.put_item(Item={"userId": "user01", "score": 100})</code></li>
+        </ul>
+
+        <h3>4. 컨테이너 기반 Lambda 실행 (Advanced)</h3>
+        <ul>
+          <li>Lambda 안에서 Kubernetes API 호출</li>
+          <li>로컬 k3s 클러스터와 Integration (Pod 생성, 삭제)</li>
+          <li>kubeconfig.yaml을 Lambda 패키지 내부에 포함</li>
+          <li>LocalStack이 제공하는 lambda container-mode 사용</li>
+        </ul>
+
+        <h3>5. Terraform 연동 테스트</h3>
+        <ul>
+          <li>LocalStack provider를 이용해 Terraform apply → 로컬 AWS 리소스 생성</li>
+          <li>실제 AWS와 동일한 방식으로 IaC(Infrastructure as Code) 실습 가능</li>
+          <li>Terraform 코드로 S3, Lambda, DynamoDB, API Gateway 등 모든 리소스 생성</li>
+        </ul>
       </section>
 
       <section>
-        <h2>3-Tier 아키텍처 구성</h2>
+        <h2>프로젝트에서 얻은 역량</h2>
         
-        <h3>Web Tier (프레젠테이션 계층)</h3>
-        <ul>
-          <li>정적 웹 서버 또는 간단한 웹 애플리케이션</li>
-          <li>ALB(Application Load Balancer) 시뮬레이션</li>
-          <li>HTTPS 및 HTTP 트래픽 라우팅</li>
-        </ul>
+        <h3>1. AWS 서비스 아키텍처의 핵심 원리 이해</h3>
+        <p>
+          실제 AWS 없이도 S3·Lambda·APIGW·DynamoDB·IAM 등 핵심 서비스의 구조를 완전히 체험할 수 있었습니다.
+        </p>
 
-        <h3>Application Tier (애플리케이션 계층)</h3>
-        <ul>
-          <li>EC2 인스턴스 시뮬레이션 또는 컨테이너 기반 애플리케이션</li>
-          <li>비즈니스 로직 처리 서버</li>
-          <li>API 서버 구성</li>
-        </ul>
+        <h3>2. 서버리스(Serverless) 아키텍처 설계</h3>
+        <p>
+          API Gateway → Lambda → DynamoDB로 이어지는 서버리스 패턴을 직접 구현하며
+          서버리스 아키텍처의 설계 원칙과 실제 적용 방법을 학습했습니다.
+        </p>
 
-        <h3>Database Tier (데이터 계층)</h3>
-        <ul>
-          <li>DynamoDB 테이블 생성 및 데이터 저장</li>
-          <li>RDS 시뮬레이션 (LocalStack 지원 범위 내)</li>
-          <li>데이터 백업 및 복구 테스트</li>
-        </ul>
-      </section>
+        <h3>3. IaC (Terraform) 실무 경험</h3>
+        <div class="highlight-box">
+          <p>
+            Terraform을 LocalStack에 적용하며 선언형 인프라 관리 방식을 이해하고,
+            실제 AWS와 동일한 방식으로 인프라 코드를 작성하고 배포하는 경험을 쌓았습니다.
+          </p>
+        </div>
 
-      <section>
-        <h2>구현 세부사항</h2>
-        
-        <h3>네트워크 구성</h3>
-        <ul>
-          <li>LocalStack VPC 및 서브넷 생성</li>
-          <li>보안 그룹 규칙 설정</li>
-          <li>인터넷 게이트웨이 및 라우팅 테이블 구성</li>
-        </ul>
+        <h3>4. 애플리케이션-인프라 통합 능력</h3>
+        <p>
+          정적 웹 → API → Lambda → DB 전체 파이프라인을 로컬에서 완성하며,
+          프론트엔드부터 백엔드, 데이터베이스까지 전체 시스템 아키텍처를 설계하고 구현할 수 있는 능력을 향상시켰습니다.
+        </p>
 
-        <h3>자동화</h3>
-        <ul>
-          <li>Terraform을 통한 LocalStack 인프라 코드 작성</li>
-          <li>AWS CLI를 LocalStack 엔드포인트로 설정하여 명령어 실행</li>
-          <li>스크립트를 통한 환경 자동 구성</li>
-        </ul>
-
-        <h3>테스트 및 검증</h3>
-        <ul>
-          <li>각 Tier 간 통신 테스트</li>
-          <li>로드 밸런싱 동작 검증</li>
-          <li>데이터 저장 및 조회 기능 테스트</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>장점 및 활용</h2>
-        <ul>
-          <li><b>비용 절감</b>: AWS 비용 없이 학습 가능</li>
-          <li><b>빠른 반복</b>: 로컬 환경에서 빠르게 테스트 및 수정 가능</li>
-          <li><b>오프라인 학습</b>: 인터넷 연결 없이도 학습 가능</li>
-          <li><b>실제 환경과 유사</b>: AWS CLI 및 Terraform과 호환</li>
-          <li><b>안전한 실험</b>: 실수해도 비용이나 실제 인프라에 영향 없음</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>학습 목표 및 성과</h2>
-        <ul>
-          <li>VMware를 활용한 가상화 환경 구성 경험</li>
-          <li>LocalStack을 통한 AWS 서비스 학습 및 테스트</li>
-          <li>3-Tier 아키텍처의 실제 구현 및 이해</li>
-          <li>Terraform을 LocalStack과 함께 사용하는 방법 학습</li>
-          <li>비용 부담 없이 충분한 학습 환경 구축</li>
-        </ul>
+        <h3>5. 비용 절감 전략</h3>
+        <p>
+          AWS 비용 발생 없이 충분히 실무형 아키텍처를 테스트할 수 있는 환경을 구축하며,
+          클라우드 비용 최적화와 효율적인 학습 방법론을 체득했습니다.
+        </p>
       </section>
 
       <section>
@@ -222,15 +233,123 @@
         <div class="tags">
           <span class="tag">VMware</span>
           <span class="tag">LocalStack</span>
-          <span class="tag">3-Tier Architecture</span>
           <span class="tag">Docker</span>
+          <span class="tag">Docker Compose</span>
           <span class="tag">Terraform</span>
           <span class="tag">AWS CLI</span>
+          <span class="tag">S3</span>
+          <span class="tag">Lambda</span>
+          <span class="tag">API Gateway</span>
+          <span class="tag">DynamoDB</span>
+          <span class="tag">IAM</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">k3s</span>
+          <span class="tag">Python</span>
+          <span class="tag">JavaScript</span>
           <span class="tag">Linux</span>
+          <span class="tag">Serverless</span>
+          <span class="tag">IaC</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>프로젝트 발표 자료</h2>
+        <div style="margin: 2rem 0;">
+          <div style="margin-bottom: 1rem; text-align: center;">
+            <button onclick="prevPage()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">이전</button>
+            <span id="pageInfo" style="margin: 0 1rem; color: #9ca3af;">페이지: <span id="pageNum">1</span> / <span id="pageCount">-</span></span>
+            <button onclick="nextPage()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">다음</button>
+            <button onclick="zoomOut()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">축소</button>
+            <button onclick="zoomIn()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">확대</button>
+          </div>
+          <div style="overflow-x: auto; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 1rem; background: #020617; text-align: center;">
+            <canvas id="pdfCanvas" style="max-width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></canvas>
+          </div>
+          <p style="margin-top: 1rem; text-align: center;">
+            <a href="../ppt.pdf" target="_blank" style="color: #38bdf8;">PDF 새 탭에서 열기</a>
+          </p>
         </div>
       </section>
     </div>
   </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    let scale = 1.5;
+    const canvas = document.getElementById('pdfCanvas');
+    const ctx = canvas.getContext('2d');
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    function renderPage(num) {
+      pageRendering = true;
+      pdfDoc.getPage(num).then(function(page) {
+        const viewport = page.getViewport({scale: scale});
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+        const renderTask = page.render(renderContext);
+
+        renderTask.promise.then(function() {
+          pageRendering = false;
+          if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+          }
+        });
+      });
+
+      document.getElementById('pageNum').textContent = num;
+    }
+
+    function queueRenderPage(num) {
+      if (pageRendering) {
+        pageNumPending = num;
+      } else {
+        renderPage(num);
+      }
+    }
+
+    function prevPage() {
+      if (pageNum <= 1) return;
+      pageNum--;
+      queueRenderPage(pageNum);
+    }
+
+    function nextPage() {
+      if (pageNum >= pdfDoc.numPages) return;
+      pageNum++;
+      queueRenderPage(pageNum);
+    }
+
+    function zoomIn() {
+      scale += 0.25;
+      renderPage(pageNum);
+    }
+
+    function zoomOut() {
+      if (scale <= 0.5) return;
+      scale -= 0.25;
+      renderPage(pageNum);
+    }
+
+    pdfjsLib.getDocument('../ppt.pdf').promise.then(function(pdfDoc_) {
+      pdfDoc = pdfDoc_;
+      document.getElementById('pageCount').textContent = pdfDoc.numPages;
+      renderPage(pageNum);
+    }).catch(function(error) {
+      console.error('PDF 로드 오류:', error);
+      canvas.parentElement.innerHTML = '<p style="color: #ef4444;">PDF를 불러올 수 없습니다. <a href="../ppt.pdf" target="_blank" style="color: #38bdf8;">여기를 클릭하여 PDF를 다운로드하세요</a>.</p>';
+    });
+  </script>
 </body>
 </html>
 
