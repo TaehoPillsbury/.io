@@ -17,7 +17,7 @@
     a:hover { text-decoration: underline; }
 
     .container {
-      max-width: 960px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 1.5rem;
     }
@@ -262,8 +262,8 @@
             <button onclick="zoomOut()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">축소</button>
             <button onclick="zoomIn()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">확대</button>
           </div>
-          <div style="overflow: hidden; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 1rem; background: #020617; text-align: center; min-height: 900px; display: flex; justify-content: center; align-items: flex-start;">
-            <canvas id="pdfCanvas" style="display: none; max-width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></canvas>
+          <div style="overflow-x: auto; overflow-y: hidden; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 1.5rem; background: #020617; text-align: center; min-height: 1000px; display: flex; justify-content: center; align-items: flex-start;">
+            <canvas id="pdfCanvas" style="display: none; max-width: none; width: auto; height: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></canvas>
             <div id="pdfLoading" style="padding: 4rem; color: #9ca3af;">
               <p>PDF를 로드하는 중...</p>
             </div>
@@ -298,7 +298,7 @@
         let pageNum = 1;
         let pageRendering = false;
         let pageNumPending = null;
-        let scale = 1.5;
+        let scale = 2.5;
         const canvas = document.getElementById('pdfCanvas');
         const ctx = canvas.getContext('2d');
         const pdfObject = document.getElementById('pdfObject');
@@ -308,7 +308,7 @@
         function renderPage(num) {
           pageRendering = true;
           pdfDoc.getPage(num).then(function(page) {
-            const viewport = page.getViewport({scale: scale * 1.5}); // 더 크게
+            const viewport = page.getViewport({scale: scale});
             canvas.height = viewport.height;
             canvas.width = viewport.width;
 
