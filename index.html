@@ -78,6 +78,15 @@
       font-size: 1.05rem;
       color: #e5e7eb;
     }
+    .card h3 a {
+      color: #e5e7eb;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .card h3 a:hover {
+      color: #38bdf8;
+      text-decoration: underline;
+    }
     .card .meta {
       font-size: 0.8rem;
       color: #9ca3af;
@@ -100,6 +109,63 @@
       color: #9ca3af;
     }
 
+    .project-section-header {
+      font-size: 1.4rem;
+      margin: 2rem 0 1rem;
+      color: #f9fafb;
+      border-bottom: 2px solid #38bdf8;
+      padding-bottom: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .project-section-header:hover {
+      color: #38bdf8;
+    }
+    .project-section-header .toggle-icon {
+      transition: transform 0.3s ease;
+      font-size: 1.2rem;
+    }
+    .project-section-header.collapsed .toggle-icon {
+      transform: rotate(-90deg);
+    }
+    .project-section-content {
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+    }
+    .project-section-content.collapsed {
+      max-height: 0;
+      opacity: 0;
+    }
+    .project-section-content.expanded {
+      max-height: 5000px;
+      opacity: 1;
+    }
+    .career-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #1f2937;
+    }
+    .career-item:last-child {
+      border-bottom: none;
+    }
+    .career-company {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 0.25rem;
+    }
+    .career-period {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-bottom: 0.5rem;
+    }
+    .career-role {
+      font-size: 0.95rem;
+      color: #d1d5db;
+    }
  
     footer {
       text-align: center;
@@ -124,47 +190,71 @@
     
     <header>
       <div class="title">김태호</div>
-      <div class="subtitle">Cloud / DevOps / Game Backend Engineer 지망</div>
+      <div class="subtitle">Cloud Engineer 지망</div>
       <div class="tagline">
         온프레미스 환경에서 FalconStor Backup, Brocade SAN Switch, Dell EMC 서버 유지보수, Veeam Backup, AIX 트러블슈팅 경험을 보유하고 있으며,<br/>
-        AWS 프리티어 환경에서 VPC, ECS, Terraform, GitLab/GitHub CI/CD, OpenVPN, Kubernetes 등을
+        VMware + LocalStack을 이용한 로컬 AWS 환경 구축 및 AWS 프리티어 환경에서 VPC, ECS, Terraform, GitLab/GitHub CI/CD, OpenVPN, Kubernetes 등을
         직접 구축하며 아키텍처 설계와 자동화를 학습하고 있습니다.
       </div>
     </header>
 
   
     <section id="about">
-      <h2>소개</h2>
-      <p>
-        인프라를 직접 손으로 만들어보고 수정하며 배우는 걸 좋아합니다.<br/>
-        온프레미스 환경에서 엔터프라이즈 백업 솔루션(FalconStor, Veeam), SAN 스위치 조닝, 서버 하드웨어 유지보수 및 AIX 운영 경험을 쌓았으며,<br/>
-        AWS 상에서 3-Tier 아키텍처, VPC/NAT/OpenVPN, ECS + ALB + ECR, GitLab & GitHub를 이용한
-        Terraform 기반 자동 배포 등을 실습하고 있습니다.<br/>
-        방탈출/서바이벌 스타일의 웹·모바일 게임을 AWS 인프라와 연결하는 것을 목표로 하고 있습니다.
-      </p>
-    </section>
+      <h2 class="project-section-header collapsed" onclick="toggleSection('about')" style="margin: 0 0 1rem 0;">
+        <span class="toggle-icon">▼</span>
+        소개
+      </h2>
+      <div class="project-section-content collapsed" id="about-content">
+        <p>
+          인프라를 직접 손으로 만들어보고 수정하며 배우는 걸 좋아합니다.<br/>
+          온프레미스 환경에서 엔터프라이즈 백업 솔루션(FalconStor, Veeam), SAN 스위치 조닝, 서버 하드웨어 유지보수 및 AIX 운영 경험을 쌓았으며,<br/>
+          VMware와 LocalStack을 활용하여 로컬 환경에서 3-Tier 아키텍처를 구축하고,<br/>
+          AWS 상에서 3-Tier 아키텍처, VPC/NAT/OpenVPN, ECS + ALB + ECR, GitLab & GitHub를 이용한
+          Terraform 기반 자동 배포 등을 실습하고 있습니다.<br/>
+          방탈출/서바이벌 스타일의 웹·모바일 게임을 AWS 인프라와 연결하는 것을 목표로 하고 있습니다.
+        </p>
 
-    <!-- ===== 기술 스택 ===== -->
-    <section id="skills">
-      <h2>기술 스택</h2>
-      <ul>
-        <li><b>AWS</b>: VPC, Subnet, IGW, NAT Gateway/Instance, EC2, ALB, ECS(EC2 & Fargate), ECR, S3, CloudFront, DynamoDB</li>
-        <li><b>Infra as Code</b>: Terraform (VPC, EC2, SG, OpenVPN, ECS, ALB 등 모듈 구성 및 remote state)</li>
-        <li><b>CI/CD</b>: GitHub Actions, GitLab CI, Docker 기반 GitLab Runner</li>
-        <li><b>네트워크 & 보안</b>: VPC Peering, NAT, OpenVPN, 보안 그룹, 라우팅 테이블 트러블슈팅</li>
-        <li><b>온프레미스 인프라</b>: FalconStor Backup, Veeam Backup, Brocade SAN Switch 조닝, Dell EMC 서버 유지보수, AIX 운영 및 트러블슈팅</li>
-        <li><b>개발</b>: Python, C#, Unity(2D), HTML/CSS/JavaScript</li>
-      </ul>
+        <!-- ===== 경력사항 ===== -->
+        <h3 style="font-size: 1.2rem; margin: 2rem 0 1rem; color: #f9fafb;">경력사항</h3>
+        <div class="career-item">
+          <div class="career-company">주식회사엔터아이티</div>
+          <div class="career-period">2020/12/14 ~ 2025/04/01</div>
+          <div class="career-role">정보보안 및 인프라 운영</div>
+        </div>
+        <div class="career-item">
+          <div class="career-company">대한상공회의소 경기인력개발원</div>
+          <div class="career-period">2020/04/07 ~ 2021/02/01</div>
+          <div class="career-role">정보보안실무</div>
+        </div>
+
+        <!-- ===== 기술 스택 ===== -->
+        <h3 style="font-size: 1.2rem; margin: 2rem 0 1rem; color: #f9fafb;">기술 스택</h3>
+        <ul>
+          <li><b>AWS</b>: VPC, Subnet, IGW, NAT Gateway/Instance, EC2, ALB, ECS(EC2 & Fargate), ECR, S3, CloudFront, DynamoDB</li>
+          <li><b>Infra as Code</b>: Terraform (VPC, EC2, SG, OpenVPN, ECS, ALB 등 모듈 구성 및 remote state)</li>
+          <li><b>CI/CD</b>: GitHub Actions, GitLab CI, Docker 기반 GitLab Runner</li>
+          <li><b>네트워크 & 보안</b>: VPC Peering, NAT, OpenVPN, 보안 그룹, 라우팅 테이블 트러블슈팅</li>
+          <li><b>가상화 & 로컬 개발</b>: VMware 17.5 Pro, LocalStack(AWS 서비스 에뮬레이션), Docker</li>
+          <li><b>온프레미스 인프라</b>: FalconStor Backup, Veeam Backup, Brocade SAN Switch 조닝, Dell EMC 서버 유지보수, AIX 운영 및 트러블슈팅</li>
+        </ul>
+      </div>
     </section>
 
     <!-- ===== 주요 프로젝트 ===== -->
     <section id="projects">
       <h2>프로젝트</h2>
-      <div class="card-grid">
+      
+      <!-- 클라우드 프로젝트 -->
+      <h3 class="project-section-header collapsed" onclick="toggleSection('cloud')">
+        <span class="toggle-icon">▼</span>
+        클라우드
+      </h3>
+      <div class="project-section-content collapsed" id="cloud-content">
+        <div class="card-grid">
 
         <!-- 프로젝트 1: ECS + ALB + Path Routing -->
         <div class="card">
-          <h3>AWS ECS + ALB Path 기반 라우팅 구축</h3>
+          <h3><a href="project-ecs-alb.html">AWS ECS + ALB Path 기반 라우팅 구축</a></h3>
           <div class="meta">2025 | 개인 학습 프로젝트</div>
           <p>
             ECR에 저장된 여러 Docker 이미지를 ECS 서비스(EC2/Fargate 혼합)로 올리고,<br/>
@@ -188,7 +278,7 @@
 
         <!-- 프로젝트 2: Terraform VPC 모듈 -->
         <div class="card">
-          <h3>Terraform 기반 VPC & 네트워크 모듈</h3>
+          <h3><a href="project-terraform-vpc.html">Terraform 기반 VPC & 네트워크 모듈</a></h3>
           <div class="meta">2025 | 개인 인프라 랩</div>
           <p>
             학습용이지만 실무형 구조를 목표로 VPC, 공용/사설 서브넷, NAT GW, IGW, 보안 그룹 등을
@@ -209,7 +299,7 @@
 
         <!-- 프로젝트 3: GitLab CI + Terraform -->
         <div class="card">
-          <h3>GitLab CI로 AWS Terraform 자동 배포</h3>
+          <h3><a href="project-gitlab-terraform.html">GitLab CI로 AWS Terraform 자동 배포</a></h3>
           <div class="meta">2025 | CI/CD 실습</div>
           <p>
             GitLab CE + GitLab Runner(Docker executor)를 구축하고, Terraform 코드를<br/>
@@ -229,7 +319,7 @@
 
         <!-- 프로젝트 4: 게임 + AWS 백엔드 -->
         <div class="card">
-          <h3>웹/모바일 게임 백엔드 AWS 연동 (진행 중)</h3>
+          <h3><a href="project-game-backend.html">웹/모바일 게임 백엔드 AWS 연동 (진행 중)</a></h3>
           <div class="meta">진행 중</div>
           <p>
             HTML/JS 또는 Unity로 만든 간단한 게임의 점수/랭킹 데이터를<br/>
@@ -248,30 +338,128 @@
           </div>
         </div>
 
-        <!-- 프로젝트 5: 온프레미스 인프라 운영 -->
+        <!-- 프로젝트 5: VMware + LocalStack 3-Tier -->
         <div class="card">
-          <h3>온프레미스 엔터프라이즈 인프라 운영</h3>
-          <div class="meta">온프레미스 환경 | 실무 경험</div>
+          <h3><a href="project-vmware-localstack.html">VMware + LocalStack 기반 3-Tier 아키텍처 구축</a></h3>
+          <div class="meta">2025 | 로컬 학습 환경</div>
           <p>
-            엔터프라이즈 환경에서 백업 솔루션 운영, SAN 스토리지 네트워크 관리,<br/>
-            서버 하드웨어 유지보수 및 유닉스 시스템 트러블슈팅 경험을 보유하고 있습니다.
+            VMware 17.5 Pro를 노트북에 설치하고, LocalStack을 이용하여<br/>
+            AWS 서비스를 에뮬레이션하여 로컬 환경에서 3-Tier 아키텍처를 구축했습니다.
           </p>
           <ul>
-            <li>FalconStor Backup 솔루션 운영 및 복구 작업 수행</li>
-            <li>Veeam Backup을 통한 가상화 환경 백업 관리</li>
-            <li>Brocade SAN Switch 조닝 구성 및 스토리지 네트워크 관리</li>
-            <li>Dell EMC 서버 하드웨어 유지보수 및 펌웨어 업데이트</li>
-            <li>AIX 시스템 운영 및 성능 튜닝, 장애 트러블슈팅</li>
+            <li>VMware 17.5 Pro 설치 및 가상머신 환경 구성</li>
+            <li>LocalStack Docker 컨테이너로 AWS 서비스 에뮬레이션 (EC2, VPC, S3, DynamoDB 등)</li>
+            <li>3-Tier 아키텍처: Web Tier, Application Tier, Database Tier 구성</li>
+            <li>비용 없이 AWS 서비스 동작 방식 학습 및 테스트 환경 구축</li>
+            <li>Terraform 또는 AWS CLI를 통한 LocalStack 환경 자동화</li>
           </ul>
           <div class="tags">
-            <span class="tag">FalconStor</span>
-            <span class="tag">Veeam</span>
-            <span class="tag">SAN Switch</span>
-            <span class="tag">Dell EMC</span>
-            <span class="tag">AIX</span>
+            <span class="tag">VMware</span>
+            <span class="tag">LocalStack</span>
+            <span class="tag">3-Tier</span>
+            <span class="tag">Docker</span>
+            <span class="tag">Terraform</span>
           </div>
         </div>
 
+        </div>
+      </div>
+
+      <!-- 온프레미스 프로젝트 -->
+      <h3 class="project-section-header collapsed" onclick="toggleSection('onprem')">
+        <span class="toggle-icon">▼</span>
+        온프레미스
+      </h3>
+      <div class="project-section-content collapsed" id="onprem-content">
+        <div class="card-grid">
+
+        <!-- 프로젝트 6: FalconStor Backup -->
+        <div class="card">
+          <h3><a href="project-falconstor.html">FalconStor Backup 솔루션 운영</a></h3>
+          <div class="meta">온프레미스 환경 | 실무 경험</div>
+          <p>
+            엔터프라이즈 환경에서 FalconStor Backup 솔루션을 운영하며<br/>
+            백업 정책 수립, 스케줄 관리, 복구 작업 등을 수행했습니다.
+          </p>
+          <ul>
+            <li>FalconStor Backup 솔루션 설치 및 구성</li>
+            <li>전체 백업(Full) 및 증분 백업(Incremental) 정책 수립</li>
+            <li>복구 테스트 수행 및 복구 절차 문서화</li>
+            <li>백업 작업 모니터링 및 장애 대응</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">FalconStor</span>
+            <span class="tag">Backup</span>
+            <span class="tag">Enterprise</span>
+          </div>
+        </div>
+
+        <!-- 프로젝트 7: Veeam Backup -->
+        <div class="card">
+          <h3><a href="project-veeam.html">Veeam Backup 솔루션 운영</a></h3>
+          <div class="meta">온프레미스 환경 | 실무 경험</div>
+          <p>
+            가상화 환경(VMware, Hyper-V)에서 Veeam Backup을 활용하여<br/>
+            VM 레벨 백업 및 복원 작업을 수행했습니다.
+          </p>
+          <ul>
+            <li>가상화 환경(VMware, Hyper-V) 백업 구성</li>
+            <li>VM 레벨 백업 및 복원 작업</li>
+            <li>백업 작업 스케줄링 및 자동화</li>
+            <li>백업 저장소 최적화 및 모니터링</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Veeam</span>
+            <span class="tag">Backup</span>
+            <span class="tag">VMware</span>
+          </div>
+        </div>
+
+        <!-- 프로젝트 8: Storage -->
+        <div class="card">
+          <h3><a href="project-storage.html">스토리지 시스템 운영 및 관리</a></h3>
+          <div class="meta">온프레미스 환경 | 실무 경험</div>
+          <p>
+            SAN 스토리지 네트워크 및 스토리지 시스템을 관리하며<br/>
+            스토리지 접근 제어 및 성능 최적화를 수행했습니다.
+          </p>
+          <ul>
+            <li>Brocade SAN Switch 조닝 구성 및 관리</li>
+            <li>Dell Storage(Unity, PowerStore) 시스템 관리</li>
+            <li>HP Storage(MSA, 3PAR) 시스템 관리</li>
+            <li>LUN 생성 및 관리, 스토리지 성능 모니터링</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">SAN Switch</span>
+            <span class="tag">Dell Storage</span>
+            <span class="tag">HP Storage</span>
+            <span class="tag">Brocade</span>
+          </div>
+        </div>
+
+        <!-- 프로젝트 9: Server -->
+        <div class="card">
+          <h3><a href="project-server.html">서버 하드웨어 및 시스템 운영</a></h3>
+          <div class="meta">온프레미스 환경 | 실무 경험</div>
+          <p>
+            서버 하드웨어 유지보수 및 유닉스 시스템 운영을 통해<br/>
+            안정적인 인프라 운영을 수행했습니다.
+          </p>
+          <ul>
+            <li>Dell EMC PowerEdge 시리즈 서버 유지보수</li>
+            <li>HP Gen 시리즈 서버 유지보수</li>
+            <li>AIX 시스템 운영 및 성능 튜닝</li>
+            <li>RAID 구성, 원격 관리(iDRAC, iLO), 장애 대응</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Dell EMC</span>
+            <span class="tag">HP Gen</span>
+            <span class="tag">AIX</span>
+            <span class="tag">Server</span>
+          </div>
+        </div>
+
+        </div>
       </div>
     </section>
 
@@ -283,6 +471,7 @@
         <li>Brocade SAN Switch Zone 구성 및 WWN 기반 LUN 마스킹, 스토리지 네트워크 장애 대응</li>
         <li>Dell EMC PowerEdge 시리즈 서버 하드웨어 점검, RAID 구성, iDRAC를 통한 원격 관리</li>
         <li>AIX 시스템 부팅 문제 해결, 파일시스템 관리, 성능 모니터링 및 튜닝</li>
+        <li>VMware 17.5 Pro 환경에서 LocalStack을 활용한 로컬 AWS 에뮬레이션 및 3-Tier 아키텍처 실습</li>
         <li>AWS 프리티어 환경에서 비용을 고려한 아키텍처 실습 (NAT GW vs NAT Instance 등)</li>
         <li>VPC 피어링, 라우팅 테이블, CIDR 중복 문제 트러블슈팅</li>
         <li>OpenVPN 직접 설치 및 Amazon Linux에서 수동 구성</li>
@@ -307,5 +496,22 @@
       © 2025 김태호. Built with GitHub Pages.
     </footer>
   </div>
+
+  <script>
+    function toggleSection(sectionId) {
+      const header = document.querySelector(`[onclick="toggleSection('${sectionId}')"]`);
+      const content = document.getElementById(`${sectionId}-content`);
+      
+      if (header.classList.contains('collapsed')) {
+        header.classList.remove('collapsed');
+        content.classList.remove('collapsed');
+        content.classList.add('expanded');
+      } else {
+        header.classList.add('collapsed');
+        content.classList.remove('expanded');
+        content.classList.add('collapsed');
+      }
+    }
+  </script>
 </body>
 </html>
