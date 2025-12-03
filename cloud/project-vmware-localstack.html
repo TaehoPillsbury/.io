@@ -255,15 +255,29 @@
       <section>
         <h2>프로젝트 발표 자료</h2>
         <div style="margin: 2rem 0;">
-          <div style="margin-bottom: 1rem; text-align: center;">
+          <div id="pdfControls" style="margin-bottom: 1rem; text-align: center; display: none;">
             <button onclick="prevPage()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">이전</button>
             <span id="pageInfo" style="margin: 0 1rem; color: #9ca3af;">페이지: <span id="pageNum">1</span> / <span id="pageCount">-</span></span>
             <button onclick="nextPage()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">다음</button>
             <button onclick="zoomOut()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">축소</button>
             <button onclick="zoomIn()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">확대</button>
           </div>
-          <div style="overflow-x: auto; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 1rem; background: #020617; text-align: center;">
-            <canvas id="pdfCanvas" style="max-width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></canvas>
+          <div style="overflow: hidden; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 1rem; background: #020617; text-align: center; min-height: 900px; display: flex; justify-content: center; align-items: flex-start;">
+            <canvas id="pdfCanvas" style="display: none; max-width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></canvas>
+            <div id="pdfLoading" style="padding: 4rem; color: #9ca3af;">
+              <p>PDF를 로드하는 중...</p>
+            </div>
+            <div id="pdfError" style="display: none; padding: 4rem; color: #9ca3af; max-width: 600px; margin: 0 auto;">
+              <p style="margin-bottom: 1rem; color: #ef4444; font-weight: bold;">로컬 파일 시스템에서는 PDF.js를 사용할 수 없습니다.</p>
+              <p style="margin-bottom: 1rem;">PDF를 보려면 다음 중 하나를 선택하세요:</p>
+              <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
+                <li>로컬 웹 서버를 실행하세요 (Python: <code>python -m http.server</code> 또는 Node.js: <code>npx serve</code>)</li>
+                <li>GitHub Pages에 배포하세요</li>
+              </ul>
+              <p style="margin-top: 1.5rem;">
+                <a href="../ppt.pdf" target="_blank" style="color: #38bdf8; text-decoration: underline; font-weight: bold;">PDF를 새 탭에서 열기</a>
+              </p>
+            </div>
           </div>
           <p style="margin-top: 1rem; text-align: center;">
             <a href="../ppt.pdf" target="_blank" style="color: #38bdf8;">PDF 새 탭에서 열기</a>
@@ -273,82 +287,115 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
-    let pdfDoc = null;
-    let pageNum = 1;
-    let pageRendering = false;
-    let pageNumPending = null;
-    let scale = 1.5;
-    const canvas = document.getElementById('pdfCanvas');
-    const ctx = canvas.getContext('2d');
+    // HTTP/HTTPS 환경에서만 PDF.js 사용 (로컬 파일 시스템에서는 object 태그 사용)
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+      // 웹 서버 환경에서만 PDF.js 로드
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      script.onload = function() {
+        let pdfDoc = null;
+        let pageNum = 1;
+        let pageRendering = false;
+        let pageNumPending = null;
+        let scale = 1.5;
+        const canvas = document.getElementById('pdfCanvas');
+        const ctx = canvas.getContext('2d');
+        const pdfObject = document.getElementById('pdfObject');
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-    function renderPage(num) {
-      pageRendering = true;
-      pdfDoc.getPage(num).then(function(page) {
-        const viewport = page.getViewport({scale: scale});
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+        function renderPage(num) {
+          pageRendering = true;
+          pdfDoc.getPage(num).then(function(page) {
+            const viewport = page.getViewport({scale: scale * 1.5}); // 더 크게
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
 
-        const renderContext = {
-          canvasContext: ctx,
-          viewport: viewport
-        };
-        const renderTask = page.render(renderContext);
+            const renderContext = {
+              canvasContext: ctx,
+              viewport: viewport
+            };
+            const renderTask = page.render(renderContext);
 
-        renderTask.promise.then(function() {
-          pageRendering = false;
-          if (pageNumPending !== null) {
-            renderPage(pageNumPending);
-            pageNumPending = null;
+            renderTask.promise.then(function() {
+              pageRendering = false;
+              if (pageNumPending !== null) {
+                renderPage(pageNumPending);
+                pageNumPending = null;
+              }
+            });
+          });
+
+          document.getElementById('pageNum').textContent = num;
+        }
+
+        function queueRenderPage(num) {
+          if (pageRendering) {
+            pageNumPending = num;
+          } else {
+            renderPage(num);
           }
-        });
-      });
+        }
 
-      document.getElementById('pageNum').textContent = num;
+        window.prevPage = function() {
+          if (pageNum <= 1) return;
+          pageNum--;
+          queueRenderPage(pageNum);
+        };
+
+        window.nextPage = function() {
+          if (pageNum >= pdfDoc.numPages) return;
+          pageNum++;
+          queueRenderPage(pageNum);
+        };
+
+        window.zoomIn = function() {
+          scale += 0.25;
+          renderPage(pageNum);
+        };
+
+        window.zoomOut = function() {
+          if (scale <= 0.5) return;
+          scale -= 0.25;
+          renderPage(pageNum);
+        };
+
+        // PDF를 fetch로 로드
+        fetch('../ppt.pdf')
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('PDF 파일을 찾을 수 없습니다.');
+            }
+            return response.arrayBuffer();
+          })
+          .then(data => {
+            return pdfjsLib.getDocument({ data: data }).promise;
+          })
+          .then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+            document.getElementById('pageCount').textContent = pdfDoc.numPages;
+            // PDF.js 성공 시 canvas 표시
+            document.getElementById('pdfLoading').style.display = 'none';
+            document.getElementById('pdfError').style.display = 'none';
+            canvas.style.display = 'block';
+            document.getElementById('pdfControls').style.display = 'block';
+            renderPage(pageNum);
+          })
+          .catch(function(error) {
+            console.error('PDF.js 로드 오류:', error);
+            // PDF.js 실패 시 에러 메시지 표시
+            document.getElementById('pdfLoading').style.display = 'none';
+            document.getElementById('pdfError').style.display = 'block';
+          });
+      };
+      document.head.appendChild(script);
+    } else {
+      // file:// 프로토콜에서는 PDF.js를 사용할 수 없음
+      console.log('로컬 파일 시스템에서는 PDF.js를 사용할 수 없습니다.');
+      document.getElementById('pdfLoading').style.display = 'none';
+      document.getElementById('pdfError').style.display = 'block';
     }
-
-    function queueRenderPage(num) {
-      if (pageRendering) {
-        pageNumPending = num;
-      } else {
-        renderPage(num);
-      }
-    }
-
-    function prevPage() {
-      if (pageNum <= 1) return;
-      pageNum--;
-      queueRenderPage(pageNum);
-    }
-
-    function nextPage() {
-      if (pageNum >= pdfDoc.numPages) return;
-      pageNum++;
-      queueRenderPage(pageNum);
-    }
-
-    function zoomIn() {
-      scale += 0.25;
-      renderPage(pageNum);
-    }
-
-    function zoomOut() {
-      if (scale <= 0.5) return;
-      scale -= 0.25;
-      renderPage(pageNum);
-    }
-
-    pdfjsLib.getDocument('../ppt.pdf').promise.then(function(pdfDoc_) {
-      pdfDoc = pdfDoc_;
-      document.getElementById('pageCount').textContent = pdfDoc.numPages;
-      renderPage(pageNum);
-    }).catch(function(error) {
-      console.error('PDF 로드 오류:', error);
-      canvas.parentElement.innerHTML = '<p style="color: #ef4444;">PDF를 불러올 수 없습니다. <a href="../ppt.pdf" target="_blank" style="color: #38bdf8;">여기를 클릭하여 PDF를 다운로드하세요</a>.</p>';
-    });
   </script>
 </body>
 </html>

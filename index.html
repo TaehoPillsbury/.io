@@ -249,72 +249,7 @@
       <div class="project-section-content collapsed" id="cloud-content">
         <div class="card-grid">
 
-        <!-- 프로젝트 1: ECS + ALB + Path Routing -->
-        <div class="card">
-          <h3><a href="cloud/project-ecs-alb.html">AWS ECS + ALB Path 기반 라우팅 구축</a></h3>
-          <div class="meta">2025 | 개인 학습 프로젝트</div>
-          <p>
-            ECR에 저장된 여러 Docker 이미지를 ECS 서비스(EC2/Fargate 혼합)로 올리고,<br/>
-            ALB에서 <code>/</code>, <code>/mzc/*</code>, <code>/aws/*</code> 경로에 따라
-            서로 다른 서비스로 트래픽을 라우팅하는 아키텍처를 구성했습니다.
-          </p>
-          <ul>
-            <li>프라이빗 서브넷의 ECS 인스턴스 + NAT GW 환경 구성</li>
-            <li>Auto Scaling Group으로 ECS EC2 용량 자동 조정</li>
-            <li>타겟 그룹과 리스너 규칙을 이용한 Path 기반 라우팅</li>
-          </ul>
-          <div class="tags">
-            <span class="tag">ECS</span>
-            <span class="tag">ALB</span>
-            <span class="tag">ECR</span>
-            <span class="tag">Auto Scaling</span>
-          </div>
-          <!-- 아래에 실제 GitHub repo 링크 있으면 교체 -->
-          <!-- <p><a href="https://github.com/YOUR_USERNAME/ecs-path-routing">GitHub 저장소</a></p> -->
-        </div>
-
-        <!-- 프로젝트 2: Terraform VPC 모듈 -->
-        <div class="card">
-          <h3><a href="cloud/project-terraform-vpc.html">Terraform 기반 VPC & 네트워크 모듈</a></h3>
-          <div class="meta">2025 | 개인 인프라 랩</div>
-          <p>
-            학습용이지만 실무형 구조를 목표로 VPC, 공용/사설 서브넷, NAT GW, IGW, 보안 그룹 등을
-            Terraform 모듈로 분리하여 관리했습니다.
-          </p>
-          <ul>
-            <li>VPC, Subnet, Route Table, NAT, SG를 각각 모듈화</li>
-            <li>S3 + DynamoDB를 이용한 remote state 백엔드 구성</li>
-            <li>GitHub/GitLab을 이용해 코드 리뷰 & 버전 관리</li>
-          </ul>
-          <div class="tags">
-            <span class="tag">Terraform</span>
-            <span class="tag">VPC</span>
-            <span class="tag">Remote State</span>
-          </div>
-          <!-- <p><a href="https://github.com/YOUR_USERNAME/terraform-vpc-lab">GitHub 저장소</a></p> -->
-        </div>
-
-        <!-- 프로젝트 3: GitLab CI + Terraform -->
-        <div class="card">
-          <h3><a href="cloud/project-gitlab-terraform.html">GitLab CI로 AWS Terraform 자동 배포</a></h3>
-          <div class="meta">2025 | CI/CD 실습</div>
-          <p>
-            GitLab CE + GitLab Runner(Docker executor)를 구축하고, Terraform 코드를<br/>
-            Merge Request 기반으로 검증 및 배포하는 CI/CD 파이프라인을 구성했습니다.
-          </p>
-          <ul>
-            <li>GitLab Runner 설치 및 Docker executor 설정</li>
-            <li><code>.gitlab-ci.yml</code>로 plan/apply 파이프라인 구현</li>
-            <li>AWS IAM Role 및 S3 backend와 연동</li>
-          </ul>
-          <div class="tags">
-            <span class="tag">GitLab CI</span>
-            <span class="tag">Terraform</span>
-            <span class="tag">AWS</span>
-          </div>
-        </div>
-
-        <!-- 프로젝트 4: 게임 + AWS 백엔드 -->
+        <!-- 프로젝트 1: 게임 + AWS 백엔드 -->
         <div class="card">
           <h3><a href="cloud/project-game-backend.html">웹/모바일 게임 백엔드 AWS 연동 (진행 중)</a></h3>
           <div class="meta">진행 중</div>
@@ -335,7 +270,7 @@
           </div>
         </div>
 
-        <!-- 프로젝트 5: LocalStack 기반 로컬 클라우드 -->
+        <!-- 프로젝트 2: LocalStack 기반 로컬 클라우드 -->
         <div class="card">
           <h3><a href="cloud/project-vmware-localstack.html">LocalStack 기반 로컬 클라우드 실습 프로젝트</a></h3>
           <div class="meta">2025 | 로컬 학습 환경</div>
