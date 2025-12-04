@@ -231,12 +231,12 @@
       <section>
         <h2>시스템 아키텍처 및 구성 요소</h2>
 
-        <h3>✅ 사용자(User)</h3>
+        <h3>1. 사용자(User)</h3>
         <ul>
           <li>웹 브라우저를 통해 플랫폼에 접근하며, Cloudflare 인증을 통과한 사용자만 내부 리소스에 접근 가능</li>
         </ul>
 
-        <h3>☁️ Cloudflare Tunnel (Zero Trust Access)</h3>
+        <h3>2. Cloudflare Tunnel (Zero Trust Access)</h3>
         <ul>
           <li>내부 서버를 외부 인터넷에 직접 노출하지 않고도 안전하게 접근 가능</li>
           <li>HTTPS 터널 기반 보안 강화</li>
@@ -244,14 +244,14 @@
           <li>Cloudflare는 전체 인프라의 Zero Trust Gate 역할을 수행하여, 로컬 VMware 환경에서도 엔터프라이즈 수준의 보안을 확보함</li>
         </ul>
 
-        <h3>💻 WEB Server (HAProxy)</h3>
+        <h3>3. WEB Server (HAProxy)</h3>
         <ul>
           <li>정적 웹 페이지 및 사용자 요청을 받아 템플릿 렌더링</li>
           <li>로컬 환경에서 API Gateway 또는 LocalStack 서비스로 프록시 역할 수행</li>
           <li>스케일 아웃이 가능한 가벼운 웹 서버 구조</li>
         </ul>
 
-        <h3>📦 MinIO (S3 Object Storage 대체)</h3>
+        <h3>4. MinIO (S3 Object Storage 대체)</h3>
         <ul>
           <li>로컬 환경에서 S3 오브젝트 스토리지를 완전히 대체</li>
           <li>포트: <code>9000</code>(API), <code>9001</code>(Console)</li>
@@ -262,7 +262,7 @@
           <li>AWS S3와 100% API 호환되므로 boto3, AWS CLI로 그대로 접근 가능</li>
         </ul>
 
-        <h3>🧪 LocalStack (AWS 클라우드 환경 재현 플랫폼)</h3>
+        <h3>5. LocalStack (AWS 클라우드 환경 재현 플랫폼)</h3>
         <ul>
           <li>포트: <code>4566</code></li>
           <li>Lambda, API Gateway, DynamoDB, IAM, SQS 등 모든 AWS 서비스가 로컬에서 실행</li>
@@ -275,20 +275,20 @@
           <li><b>SQS:</b> 사용자 API 요청을 큐잉하여 순차 처리, 병렬 처리 시 충돌 방지</li>
         </ul>
 
-        <h3>🐳 AWS CLI Container</h3>
+        <h3>6. AWS CLI Container</h3>
         <ul>
           <li>AWS 서비스 프로비저닝 및 관리</li>
           <li>LocalStack 테스트용 CLI 환경</li>
           <li>Lambda 패키지 업로드, API Gateway 구성 등 자동화에 활용</li>
         </ul>
 
-        <h3>🔒 Veeam Backup (VM Backup)</h3>
+        <h3>7. Veeam Backup (VM Backup)</h3>
         <ul>
           <li>VMware 가상머신의 전체 백업 및 복구 구성</li>
           <li>실무형 인프라 운영 환경을 그대로 반영</li>
         </ul>
 
-        <h3>☸️ Kubernetes (k3s Cluster)</h3>
+        <h3>8. Kubernetes (k3s Cluster)</h3>
         <ul>
           <li>로컬 서버에서 경량 Kubernetes 클러스터 운영</li>
           <li>Lambda의 요청을 받아 Deployment 생성</li>
@@ -300,7 +300,7 @@
           <li>- Lambda 기반 자동화와 연동</li>
         </ul>
 
-        <h3>🧾 DynamoDB(LocalStack)</h3>
+        <h3>9. DynamoDB(LocalStack)</h3>
         <ul>
           <li>Lambda에서 생성한 Deploy 로그 저장소</li>
           <li>배포 이력 조회 및 상태 모니터링에 사용</li>
