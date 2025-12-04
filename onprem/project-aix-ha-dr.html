@@ -106,6 +106,17 @@
       color: #e5e7eb;
       font-weight: 600;
     }
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      border: 1px solid #1f2937;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    .image-container {
+      text-align: center;
+      margin: 2rem 0;
+    }
   </style>
 </head>
 <body>
@@ -132,6 +143,13 @@
           또한 장애 시점의 NSS Snapshot을 기반으로 장애 시점 이전의 정상 데이터를 AIX에 재할당하여
           신속하게 원복할 수 있는 체계를 구축하였습니다.
         </p>
+      </section>
+
+      <section>
+        <h2>구성도</h2>
+        <div class="image-container">
+          <img src="../PPT/AIX Voluem.png" alt="AIX HA & DR 구성도" />
+        </div>
       </section>
 
       <section>
