@@ -277,30 +277,28 @@
           </div>
         </div>
 
-        <!-- 프로젝트 2: LocalStack 기반 로컬 클라우드 -->
+        <!-- 프로젝트 2: LocalStack 기반 Kubernetes 자동 생성 -->
         <div class="card">
-          <h3><a href="cloud/project-vmware-localstack.html">LocalStack 기반 로컬 클라우드 실습 프로젝트</a></h3>
-          <div class="meta">2025 | 로컬 학습 환경</div>
+          <h3><a href="cloud/project-vmware-localstack.html">LocalStack을 이용하여 로컬 환경에서 가상 AWS 서비스를 활용, Kubernetes Pod 자동 생성 프로젝트</a></h3>
+          <div class="meta">2025.10.1~31 | VMware 기반 로컬 클라우드 플랫폼</div>
           <p>
-            LocalStack을 활용해 AWS와 거의 동일한 클라우드 환경을 재현하고,<br/>
-            S3·Lambda·API Gateway·DynamoDB 등 주요 AWS 서비스를 비용 없이 실습할 수 있는
-            로컬 클라우드 플랫폼을 구축했습니다.
+            VMware 기반 로컬 인프라에서 LocalStack·MinIO·Cloudflare·Kubernetes를 통합하여<br/>
+            AWS와 동일한 서버리스 + 컨테이너 자동 배포 플랫폼을 구축했습니다.
           </p>
           <ul>
-            <li>Docker Compose로 LocalStack 클러스터 구축</li>
-            <li>S3 정적 웹사이트 호스팅 및 API Gateway + Lambda + DynamoDB 연동</li>
-            <li>서버리스 아키텍처 패턴 구현 및 Kubernetes(k3s) 통합</li>
-            <li>Terraform을 통한 IaC 실습 및 전체 파이프라인 구축</li>
+            <li>LocalStack + MinIO + Cloudflare Tunnel + Kubernetes(k3s) 통합 플랫폼</li>
+            <li>사용자 요청 시 Lambda가 자동으로 Kubernetes Deployment 생성</li>
+            <li>Cloudflare Zero Trust로 엔터프라이즈급 보안 확보</li>
+            <li>HAProxy, DynamoDB(LocalStack), SQS, Veeam Backup 등 풀스택 구성</li>
           </ul>
           <div class="tags">
             <span class="tag">VMware</span>
             <span class="tag">LocalStack</span>
-            <span class="tag">S3</span>
+            <span class="tag">Kubernetes</span>
+            <span class="tag">MinIO</span>
+            <span class="tag">Cloudflare</span>
             <span class="tag">Lambda</span>
-            <span class="tag">API Gateway</span>
-            <span class="tag">DynamoDB</span>
-            <span class="tag">Terraform</span>
-            <span class="tag">Serverless</span>
+            <span class="tag">HAProxy</span>
           </div>
         </div>
 
@@ -438,22 +436,6 @@
       </div>
     </section>
 
-    <!-- ===== 경험/학습 정리 ===== -->
-    <section id="experience">
-      <h2>학습 및 실습 경험 정리</h2>
-      <ul>
-        <li>온프레미스 환경: FalconStor Backup 정책 구성 및 복구 테스트, Veeam Backup 작업 스케줄링 및 모니터링</li>
-        <li>Brocade SAN Switch Zone 구성 및 WWN 기반 LUN 마스킹, 스토리지 네트워크 장애 대응</li>
-        <li>Dell EMC PowerEdge 시리즈 서버 하드웨어 점검, RAID 구성, iDRAC를 통한 원격 관리</li>
-        <li>AIX 시스템 부팅 문제 해결, 파일시스템 관리, 성능 모니터링 및 튜닝</li>
-        <li>VMware 17.5 Pro 환경에서 LocalStack을 활용한 로컬 AWS 에뮬레이션 및 3-Tier 아키텍처 실습</li>
-        <li>AWS 프리티어 환경에서 비용을 고려한 아키텍처 실습 (NAT GW vs NAT Instance 등)</li>
-        <li>VPC 피어링, 라우팅 테이블, CIDR 중복 문제 트러블슈팅</li>
-        <li>OpenVPN 직접 설치 및 Amazon Linux에서 수동 구성</li>
-        <li>Docker & Kubernetes(k3s) 환경에서 컨테이너 오케스트레이션 실습</li>
-        <li>GitHub Actions를 통한 정적 웹 배포 및 버전 관리</li>
-      </ul>
-    </section>
 
     <!-- ===== 링크 & 연락처 ===== -->
     <section id="contact">

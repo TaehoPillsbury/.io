@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>LocalStack 기반 로컬 클라우드 실습 프로젝트 | 김태호 포트폴리오</title>
+  <title>LocalStack을 이용하여 로컬 환경에서 가상 AWS 서비스를 활용, Kubernetes Pod 자동 생성 프로젝트 | 김태호 포트폴리오</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
@@ -17,7 +17,7 @@
     a:hover { text-decoration: underline; }
 
     .container {
-      max-width: 1400px;
+      max-width: 960px;
       margin: 0 auto;
       padding: 1.5rem;
     }
@@ -62,6 +62,11 @@
       margin: 1.5rem 0 0.75rem;
       color: #e5e7eb;
     }
+    h4 {
+      font-size: 1rem;
+      margin: 1rem 0 0.5rem;
+      color: #d1d5db;
+    }
     p {
       margin: 1rem 0;
     }
@@ -79,20 +84,6 @@
       font-size: 0.9em;
       color: #60a5fa;
     }
-    .tags {
-      margin: 1.5rem 0;
-    }
-    .tag {
-      display: inline-block;
-      margin-right: 0.5rem;
-      margin-bottom: 0.5rem;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      background: #111827;
-      border: 1px solid #1f2937;
-      color: #9ca3af;
-      font-size: 0.85rem;
-    }
     .highlight-box {
       background: #020617;
       border-left: 3px solid #38bdf8;
@@ -100,337 +91,236 @@
       margin: 1.5rem 0;
       border-radius: 0.25rem;
     }
+    .tech-stack {
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #1f2937;
+    }
+    th {
+      background: #020617;
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+    .component-box {
+      background: #020617;
+      border: 1px solid #374151;
+      border-radius: 0.5rem;
+      padding: 1rem 1.5rem;
+      margin: 1rem 0;
+    }
+    .component-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-bottom: 0.5rem;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
       <a href="../index.html" class="back-link">← 포트폴리오로 돌아가기</a>
-      <h1>LocalStack 기반 로컬 클라우드 실습 프로젝트</h1>
-      <div class="meta">2025 | 로컬 학습 환경</div>
+      <h1>LocalStack + MinIO + Cloudflare + Kubernetes 자동 생성 플랫폼 구축</h1>
+      <div class="meta">2025.10.1~31 | VMware Workstation Pro 17.5 | 로컬 환경에서 가상 AWS 서비스를 활용한 Kubernetes Pod 자동 생성 프로젝트</div>
     </header>
 
     <div class="content">
       <section>
-        <h2>프로젝트 목표</h2>
+        <h2>프로젝트 개요</h2>
         <p>
-          로컬 PC와 VMware 기반 가상환경에서 LocalStack을 활용해 AWS와 거의 동일한 클라우드 환경을 재현하고,
-          S3·Lambda·API Gateway·DynamoDB·IAM 등 주요 AWS 서비스를 비용 없이 실습할 수 있는
-          로컬 클라우드 플랫폼을 구축하는 것입니다.
+          로컬 환경(VMware Pro 17.5)에서 실제 AWS 아키텍처와 동일한 방식으로 동작하는 클라우드 자동 배포 플랫폼을 구축한 사례입니다.
         </p>
         <p>
-          LocalStack 기반의 로컬 클라우드 인프라를 구축하여 API Gateway · Lambda · DynamoDB · S3 등
-          AWS 서버리스 아키텍처를 실제 AWS 없이 완전하게 구현하고 테스트할 수 있는 실무형 개발 환경을 완성했습니다.
+          LocalStack·MinIO·Cloudflare·k3s를 통합하여 서버리스 + 컨테이너 + 객체 스토리지 + 네트워크 보안 + 로드밸런싱을 모두 포함하는 풀스택 클라우드 환경을 구현했습니다.
+        </p>
+        <p>
+          해당 플랫폼은 사용자가 웹(UI)을 통해 요청하면 자동으로 Kubernetes에 Deployment를 생성하며, 생성된 리소스는 DynamoDB(LocalStack)에 로그로 저장됩니다.
+        </p>
+        <p>
+          또한, Cloudflare로 외부 보안 레이어를 구축하여 로컬 서버를 외부에 노출하지 않고도 안전한 접근이 가능하도록 설계했습니다.
         </p>
       </section>
 
       <section>
-        <h2>전체 아키텍처</h2>
-        
-        <h3>구성 요소</h3>
-        <div class="highlight-box">
+        <h2>환경 및 기술 스택</h2>
+        <div class="tech-stack">
+          <p><b>환경:</b> VMware Workstation Pro 17.5</p>
+          <p><b>기술 스택:</b> LocalStack, MinIO, Cloudflare Tunnel, Kubernetes(k3s), HAProxy, Lambda(LocalStack), DynamoDB(Local), IAM(LocalStack), SQS(LocalStack), Docker, AWS CLI Container, Veeam Backup</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>시스템 아키텍처 및 구성 요소</h2>
+
+        <div class="component-box">
+          <div class="component-title">✅ 사용자(User)</div>
           <ul>
-            <li><b>LocalStack (컨테이너)</b>: AWS API Gateway, Lambda, S3, DynamoDB 등 Full AWS API 에뮬레이션</li>
-            <li><b>LocalStack Client (컨테이너)</b>: awscli / terraform / curl 테스트 전용</li>
-            <li><b>로컬 테스트 웹페이지 (S3 정적 호스팅)</b>: JS에서 Lambda + API Gateway 호출</li>
-            <li><b>Lambda 함수 (Python)</b>: DynamoDB Local에 데이터 저장, Kubernetes 클러스터 조작(옵션) 등 복잡한 기능도 로컬에서 테스트</li>
-            <li><b>DynamoDB Local 테이블</b>: 웹 애플리케이션 사용자 데이터 저장</li>
-            <li><b>API Gateway</b>: S3 정적 웹페이지와 Lambda 연결</li>
+            <li>웹 브라우저를 통해 플랫폼에 접근하며, Cloudflare 인증을 통과한 사용자만 내부 리소스에 접근 가능</li>
           </ul>
         </div>
 
-        <h3>VMware 환경</h3>
-        <ul>
-          <li>노트북에 VMware 17.5 Pro 설치 및 라이센스 구성</li>
-          <li>Linux 가상머신 생성 및 네트워크 설정</li>
-          <li>Docker Compose로 LocalStack + Client 환경 구성</li>
-          <li>포트 매핑 및 서비스 활성화 (S3, Lambda, DynamoDB, APIGW 등)</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>주요 구현 기능</h2>
-        
-        <h3>1. LocalStack 클러스터 구축</h3>
-        <ul>
-          <li>Docker Compose로 LocalStack + Client 환경 구성</li>
-          <li>포트 매핑 및 서비스 활성화 (S3, Lambda, DynamoDB, APIGW 등)</li>
-          <li>AWS CLI endpoint를 LocalStack으로 변경하여 테스트</li>
-          <li><code>aws --endpoint-url=http://localhost:4566 s3 ls</code> 명령어로 LocalStack S3 접근</li>
-        </ul>
-
-        <h3>2. S3 정적 웹사이트 호스팅</h3>
-        <div class="highlight-box">
+        <div class="component-box">
+          <div class="component-title">☁️ Cloudflare Tunnel (Zero Trust Access)</div>
           <ul>
-            <li>웹파일(index.html, script.js 등)을 LocalStack S3에 업로드</li>
-            <li>AWS S3와 동일한 방식으로 버킷 정책, 정적 호스팅 설정</li>
-            <li>웹에서 API Gateway 호출 → Lambda → DynamoDB 로직 구현</li>
+            <li>내부 서버를 외부 인터넷에 직접 노출하지 않고도 안전하게 접근 가능</li>
+            <li>HTTPS 터널 기반 보안 강화</li>
+            <li>사용자 인증 (Google, GitHub 등 SSO 연동 가능)</li>
+            <li>Cloudflare는 전체 인프라의 Zero Trust Gate 역할을 수행하여, 로컬 VMware 환경에서도 엔터프라이즈 수준의 보안을 확보함</li>
           </ul>
         </div>
 
-        <h3>3. API Gateway + Lambda + DynamoDB 연동</h3>
-        <ul>
-          <li>Lambda(Python 3.9) 함수를 ZIP 배포</li>
-          <li>API Gateway REST API 생성</li>
-          <li><code>/create-user</code>, <code>/create-container</code> 같은 실제 API 구조 설계</li>
-          <li>DynamoDB Local에 데이터 저장/조회 구현</li>
-          <li>예: <code>table.put_item(Item={"userId": "user01", "score": 100})</code></li>
-        </ul>
+        <div class="component-box">
+          <div class="component-title">💻 WEB Server (HAProxy)</div>
+          <ul>
+            <li>정적 웹 페이지 및 사용자 요청을 받아 템플릿 렌더링</li>
+            <li>로컬 환경에서 API Gateway 또는 LocalStack 서비스로 프록시 역할 수행</li>
+            <li>스케일 아웃이 가능한 가벼운 웹 서버 구조</li>
+          </ul>
+        </div>
 
-        <h3>4. 컨테이너 기반 Lambda 실행 (Advanced)</h3>
-        <ul>
-          <li>Lambda 안에서 Kubernetes API 호출</li>
-          <li>로컬 k3s 클러스터와 Integration (Pod 생성, 삭제)</li>
-          <li>kubeconfig.yaml을 Lambda 패키지 내부에 포함</li>
-          <li>LocalStack이 제공하는 lambda container-mode 사용</li>
-        </ul>
+        <div class="component-box">
+          <div class="component-title">📦 MinIO (S3 Object Storage 대체)</div>
+          <ul>
+            <li>로컬 환경에서 S3 오브젝트 스토리지를 완전히 대체</li>
+            <li>포트: 9000(API), 9001(Console)</li>
+            <li><b>주요 역할:</b></li>
+            <li style="margin-left: 1rem;">- 정적 웹 사이트 호스팅</li>
+            <li style="margin-left: 1rem;">- Lambda 패키지 저장</li>
+            <li style="margin-left: 1rem;">- 배포 로그/결과 백업 저장소</li>
+            <li>AWS S3와 100% API 호환되므로 boto3, AWS CLI로 그대로 접근 가능</li>
+          </ul>
+        </div>
 
-        <h3>5. Terraform 연동 테스트</h3>
-        <ul>
-          <li>LocalStack provider를 이용해 Terraform apply → 로컬 AWS 리소스 생성</li>
-          <li>실제 AWS와 동일한 방식으로 IaC(Infrastructure as Code) 실습 가능</li>
-          <li>Terraform 코드로 S3, Lambda, DynamoDB, API Gateway 등 모든 리소스 생성</li>
-        </ul>
+        <div class="component-box">
+          <div class="component-title">🧪 LocalStack (AWS 클라우드 환경 재현 플랫폼)</div>
+          <ul>
+            <li>포트: 4566</li>
+            <li>Lambda, API Gateway, DynamoDB, IAM, SQS 등 모든 AWS 서비스가 로컬에서 실행</li>
+            <li>AWS 비용 없이도 실제 AWS 구조와 동일하게 개발/테스트 가능</li>
+            <li><b>구성 요소:</b></li>
+            <li style="margin-left: 1rem;"><b>Lambda:</b> API Gateway 요청을 받아 Kubernetes(k3s)에 Deploy 생성</li>
+            <li style="margin-left: 1rem;"><b>API Gateway:</b> 사용자 요청을 받아 Lambda로 전달</li>
+            <li style="margin-left: 1rem;"><b>DynamoDB (LocalStack):</b> 생성된 Deploy 정보를 로그로 저장</li>
+            <li style="margin-left: 1rem;"><b>IAM:</b> Lambda, S3, DynamoDB 등에 대한 권한 정책 관리</li>
+            <li style="margin-left: 1rem;"><b>SQS:</b> 사용자 API 요청을 큐잉하여 순차 처리, 병렬 처리 시 충돌 방지</li>
+          </ul>
+        </div>
+
+        <div class="component-box">
+          <div class="component-title">🐳 AWS CLI Container</div>
+          <ul>
+            <li>AWS 서비스 프로비저닝 및 관리</li>
+            <li>LocalStack 테스트용 CLI 환경</li>
+            <li>Lambda 패키지 업로드, API Gateway 구성 등 자동화에 활용</li>
+          </ul>
+        </div>
+
+        <div class="component-box">
+          <div class="component-title">🔒 Veeam Backup (VM Backup)</div>
+          <ul>
+            <li>VMware 가상머신의 전체 백업 및 복구 구성</li>
+            <li>실무형 인프라 운영 환경을 그대로 반영</li>
+          </ul>
+        </div>
+
+        <div class="component-box">
+          <div class="component-title">☸️ Kubernetes (k3s Cluster)</div>
+          <ul>
+            <li>로컬 서버에서 경량 Kubernetes 클러스터 운영</li>
+            <li>Lambda의 요청을 받아 Deployment 생성</li>
+            <li>Service, ReplicaSet, Pod 관리</li>
+            <li>Dev/Test 환경에서 실무용 컨테이너 오케스트레이션 구성</li>
+            <li><b>역할:</b></li>
+            <li style="margin-left: 1rem;">- 컨테이너 기반 애플리케이션 실행</li>
+            <li style="margin-left: 1rem;">- 멀티 노드(k3s master + worker 구성)</li>
+            <li style="margin-left: 1rem;">- Lambda 기반 자동화와 연동</li>
+          </ul>
+        </div>
+
+        <div class="component-box">
+          <div class="component-title">🧾 DynamoDB(LocalStack)</div>
+          <ul>
+            <li>Lambda에서 생성한 Deploy 로그 저장소</li>
+            <li>배포 이력 조회 및 상태 모니터링에 사용</li>
+            <li>완전한 NoSQL 환경을 로컬에서 재현</li>
+          </ul>
+        </div>
       </section>
 
       <section>
-        <h2>프로젝트에서 얻은 역량</h2>
-        
-        <h3>1. AWS 서비스 아키텍처의 핵심 원리 이해</h3>
-        <p>
-          실제 AWS 없이도 S3·Lambda·APIGW·DynamoDB·IAM 등 핵심 서비스의 구조를 완전히 체험할 수 있었습니다.
-        </p>
+        <h2>동작 흐름 (End-to-End)</h2>
+        <ol>
+          <li>사용자가 Cloudflare Access 인증을 통해 웹 페이지 접속</li>
+          <li>HAProxy 웹서버에서 요청 입력</li>
+          <li>요청은 Cloudflare Tunnel → LocalStack API Gateway로 전달</li>
+          <li>API Gateway는 Lambda 함수 호출</li>
+          <li>Lambda는 Kubernetes(k3s) API 호출하여 Deployment 생성</li>
+          <li>생성된 배포 정보는 DynamoDB(LocalStack)에 저장</li>
+          <li>결과 화면이 사용자에게 반환</li>
+          <li>모든 정적 파일 및 백업은 MinIO/Veeam을 통해 관리</li>
+        </ol>
+      </section>
 
-        <h3>2. 서버리스(Serverless) 아키텍처 설계</h3>
-        <p>
-          API Gateway → Lambda → DynamoDB로 이어지는 서버리스 패턴을 직접 구현하며
-          서버리스 아키텍처의 설계 원칙과 실제 적용 방법을 학습했습니다.
-        </p>
+      <section>
+        <h2>프로젝트 핵심 성과</h2>
+        <table>
+          <tr>
+            <th>분야</th>
+            <th>성과</th>
+          </tr>
+          <tr>
+            <td>보안</td>
+            <td>Cloudflare Zero Trust 도입으로 로컬 환경에서도 엔터프라이즈급 보안 확보</td>
+          </tr>
+          <tr>
+            <td>스토리지</td>
+            <td>MinIO로 S3 대체 스토리지 완전 구현</td>
+          </tr>
+          <tr>
+            <td>서버리스</td>
+            <td>Lambda + API Gateway 로직을 LocalStack으로 그대로 재현</td>
+          </tr>
+          <tr>
+            <td>컨테이너</td>
+            <td>Kubernetes(k3s) 자동 Deployment 생성 시스템 구축</td>
+          </tr>
+          <tr>
+            <td>인프라</td>
+            <td>VMware 기반 멀티 서버 구성(HAProxy, MinIO, LocalStack, K3s 등)</td>
+          </tr>
+          <tr>
+            <td>확장성</td>
+            <td>AWS로 전환 시 추가 수정 없이 100% 호환 가능</td>
+          </tr>
+          <tr>
+            <td>자동화</td>
+            <td>사용자 요청 → Lambda → K8s Deploy 생성까지 완전 자동화</td>
+          </tr>
+        </table>
+      </section>
 
-        <h3>3. IaC (Terraform) 실무 경험</h3>
+      <section>
+        <h2>프로젝트 요약</h2>
         <div class="highlight-box">
-          <p>
-            Terraform을 LocalStack에 적용하며 선언형 인프라 관리 방식을 이해하고,
-            실제 AWS와 동일한 방식으로 인프라 코드를 작성하고 배포하는 경험을 쌓았습니다.
-          </p>
-        </div>
-
-        <h3>4. 애플리케이션-인프라 통합 능력</h3>
-        <p>
-          정적 웹 → API → Lambda → DB 전체 파이프라인을 로컬에서 완성하며,
-          프론트엔드부터 백엔드, 데이터베이스까지 전체 시스템 아키텍처를 설계하고 구현할 수 있는 능력을 향상시켰습니다.
-        </p>
-
-        <h3>5. 비용 절감 전략</h3>
-        <p>
-          AWS 비용 발생 없이 충분히 실무형 아키텍처를 테스트할 수 있는 환경을 구축하며,
-          클라우드 비용 최적화와 효율적인 학습 방법론을 체득했습니다.
-        </p>
-      </section>
-
-      <section>
-        <h2>기술 스택</h2>
-        <div class="tags">
-          <span class="tag">VMware</span>
-          <span class="tag">LocalStack</span>
-          <span class="tag">Docker</span>
-          <span class="tag">Docker Compose</span>
-          <span class="tag">Terraform</span>
-          <span class="tag">AWS CLI</span>
-          <span class="tag">S3</span>
-          <span class="tag">Lambda</span>
-          <span class="tag">API Gateway</span>
-          <span class="tag">DynamoDB</span>
-          <span class="tag">IAM</span>
-          <span class="tag">Kubernetes</span>
-          <span class="tag">k3s</span>
-          <span class="tag">Python</span>
-          <span class="tag">JavaScript</span>
-          <span class="tag">Linux</span>
-          <span class="tag">Serverless</span>
-          <span class="tag">IaC</span>
-        </div>
-      </section>
-
-      <section>
-        <h2>프로젝트 발표 자료</h2>
-        <div style="margin: 2rem 0;">
-          <div id="pdfControls" style="margin-bottom: 1rem; text-align: center; display: none;">
-            <button onclick="prevPage()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">이전</button>
-            <span id="pageInfo" style="margin: 0 1rem; color: #9ca3af;">페이지: <span id="pageNum">1</span> / <span id="pageCount">-</span></span>
-            <button onclick="nextPage()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">다음</button>
-            <button onclick="zoomOut()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">축소</button>
-            <button onclick="zoomIn()" style="padding: 0.5rem 1rem; margin: 0 0.5rem; background: #1f2937; color: #e5e7eb; border: 1px solid #374151; border-radius: 0.25rem; cursor: pointer;">확대</button>
-          </div>
-          <div style="overflow-x: auto; overflow-y: hidden; border: 1px solid #1f2937; border-radius: 0.5rem; padding: 1.5rem; background: #020617; text-align: center; min-height: 1000px; display: flex; justify-content: center; align-items: flex-start;">
-            <canvas id="pdfCanvas" style="display: none; max-width: none; width: auto; height: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3);"></canvas>
-            <div id="pdfLoading" style="padding: 4rem; color: #9ca3af;">
-              <p>PDF를 로드하는 중...</p>
-            </div>
-            <div id="pdfError" style="display: none; padding: 4rem; color: #9ca3af; max-width: 600px; margin: 0 auto;">
-              <p style="margin-bottom: 1rem; color: #ef4444; font-weight: bold;">로컬 파일 시스템에서는 PDF.js를 사용할 수 없습니다.</p>
-              <p style="margin-bottom: 1rem;">PDF를 보려면 다음 중 하나를 선택하세요:</p>
-              <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
-                <li>로컬 웹 서버를 실행하세요 (Python: <code>python -m http.server</code> 또는 Node.js: <code>npx serve</code>)</li>
-                <li>GitHub Pages에 배포하세요</li>
-              </ul>
-              <p style="margin-top: 1.5rem;">
-                <a href="../ppt.pdf" target="_blank" style="color: #38bdf8; text-decoration: underline; font-weight: bold;">PDF를 새 탭에서 열기</a>
-              </p>
-            </div>
-          </div>
-          <p style="margin-top: 1rem; text-align: center;">
-            <a href="../ppt.pdf" target="_blank" style="color: #38bdf8;">PDF 새 탭에서 열기</a>
+          <p style="text-align: center; margin: 0; font-size: 1.1rem;">
+            <b>"VMware 기반 로컬 인프라에서 LocalStack·MinIO·Cloudflare·Kubernetes를 통합하여<br/>
+            AWS와 동일한 서버리스 + 컨테이너 자동 배포 플랫폼을 구축한 프로젝트입니다."</b>
           </p>
         </div>
       </section>
     </div>
   </div>
-
-  <script>
-    // HTTP/HTTPS 환경에서만 PDF.js 사용 (로컬 파일 시스템에서는 object 태그 사용)
-    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-      // 웹 서버 환경에서만 PDF.js 로드
-      const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-      script.onload = function() {
-        let pdfDoc = null;
-        let pageNum = 1;
-        let pageRendering = false;
-        let pageNumPending = null;
-        let scale = 1.0;
-        const canvas = document.getElementById('pdfCanvas');
-        const ctx = canvas.getContext('2d');
-        const pdfObject = document.getElementById('pdfObject');
-        const container = canvas.parentElement;
-
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-        function calculateScale(pageWidth, pageHeight) {
-          // 컨테이너 너비와 높이를 고려하여 적절한 스케일 계산
-          const containerWidth = container.clientWidth - 60; // 패딩 고려
-          const containerHeight = container.clientHeight - 60;
-          
-          const scaleX = containerWidth / pageWidth;
-          const scaleY = containerHeight / pageHeight;
-          
-          // 작은 값을 선택하여 전체 페이지가 보이도록 함
-          return Math.min(scaleX, scaleY, 3.0); // 최대 3배까지만
-        }
-
-        function renderPage(num) {
-          pageRendering = true;
-          pdfDoc.getPage(num).then(function(page) {
-            // 첫 렌더링 시 화면 크기에 맞춰 스케일 계산
-            if (num === 1 && scale === 1.0) {
-              const initialViewport = page.getViewport({scale: 1.0});
-              scale = calculateScale(initialViewport.width, initialViewport.height);
-            }
-            
-            const viewport = page.getViewport({scale: scale});
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            const renderContext = {
-              canvasContext: ctx,
-              viewport: viewport
-            };
-            const renderTask = page.render(renderContext);
-
-            renderTask.promise.then(function() {
-              pageRendering = false;
-              if (pageNumPending !== null) {
-                renderPage(pageNumPending);
-                pageNumPending = null;
-              }
-            });
-          });
-
-          document.getElementById('pageNum').textContent = num;
-        }
-
-        function queueRenderPage(num) {
-          if (pageRendering) {
-            pageNumPending = num;
-          } else {
-            renderPage(num);
-          }
-        }
-
-        window.prevPage = function() {
-          if (pageNum <= 1) return;
-          pageNum--;
-          queueRenderPage(pageNum);
-        };
-
-        window.nextPage = function() {
-          if (pageNum >= pdfDoc.numPages) return;
-          pageNum++;
-          queueRenderPage(pageNum);
-        };
-
-        window.zoomIn = function() {
-          scale += 0.25;
-          renderPage(pageNum);
-        };
-
-        window.zoomOut = function() {
-          if (scale <= 0.3) return;
-          scale -= 0.25;
-          renderPage(pageNum);
-        };
-
-        // 화면 크기 변경 시 스케일 재조정
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-          clearTimeout(resizeTimer);
-          resizeTimer = setTimeout(function() {
-            if (pdfDoc) {
-              pdfDoc.getPage(pageNum).then(function(page) {
-                const initialViewport = page.getViewport({scale: 1.0});
-                scale = calculateScale(initialViewport.width, initialViewport.height);
-                renderPage(pageNum);
-              });
-            }
-          }, 250);
-        });
-
-        // PDF를 fetch로 로드
-        fetch('../ppt.pdf')
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('PDF 파일을 찾을 수 없습니다.');
-            }
-            return response.arrayBuffer();
-          })
-          .then(data => {
-            return pdfjsLib.getDocument({ data: data }).promise;
-          })
-          .then(function(pdfDoc_) {
-            pdfDoc = pdfDoc_;
-            document.getElementById('pageCount').textContent = pdfDoc.numPages;
-            // PDF.js 성공 시 canvas 표시
-            document.getElementById('pdfLoading').style.display = 'none';
-            document.getElementById('pdfError').style.display = 'none';
-            canvas.style.display = 'block';
-            document.getElementById('pdfControls').style.display = 'block';
-            renderPage(pageNum);
-          })
-          .catch(function(error) {
-            console.error('PDF.js 로드 오류:', error);
-            // PDF.js 실패 시 에러 메시지 표시
-            document.getElementById('pdfLoading').style.display = 'none';
-            document.getElementById('pdfError').style.display = 'block';
-          });
-      };
-      document.head.appendChild(script);
-    } else {
-      // file:// 프로토콜에서는 PDF.js를 사용할 수 없음
-      console.log('로컬 파일 시스템에서는 PDF.js를 사용할 수 없습니다.');
-      document.getElementById('pdfLoading').style.display = 'none';
-      document.getElementById('pdfError').style.display = 'block';
-    }
-  </script>
 </body>
 </html>
-
