@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Veeam Backup & Replication + FalconStor VTL 기반 가상 테이프 백업 시스템 구축 | 김태호 포트폴리오</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #0f172a;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+    a { color: #38bdf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    header {
+      padding: 2rem 0 1rem;
+      border-bottom: 1px solid #1f2937;
+      margin-bottom: 2rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+    .back-link:hover {
+      color: #38bdf8;
+    }
+    h1 {
+      font-size: 2rem;
+      margin: 0 0 0.5rem 0;
+      color: #f9fafb;
+    }
+    .meta {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+
+    .content {
+      margin: 2rem 0;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+      color: #f9fafb;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 0.5rem;
+    }
+    h3 {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #e5e7eb;
+    }
+    h4 {
+      font-size: 1rem;
+      margin: 1rem 0 0.5rem;
+      color: #d1d5db;
+    }
+    p {
+      margin: 1rem 0;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+      margin: 0.75rem 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    code {
+      background: #1f2937;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-size: 0.9em;
+      color: #60a5fa;
+    }
+    .highlight-box {
+      background: #020617;
+      border-left: 3px solid #38bdf8;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0.25rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #1f2937;
+    }
+    th {
+      background: #020617;
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="../index.html" class="back-link">← 포트폴리오로 돌아가기</a>
+      <h1>Veeam Backup & Replication + FalconStor VTL 기반 가상 테이프 백업 시스템 구축</h1>
+      <div class="meta">온프레미스 환경 | 실무 경험 | Client 서버 백업 데이터를 FalconStor VTL(Virtual Tape Library)로 이관하는 엔터프라이즈 백업 아키텍처 구축</div>
+    </header>
+
+    <div class="content">
+      <section>
+        <h2>프로젝트 개요</h2>
+        <p>
+          고객사 운영 서버(Client Server)들의 백업 데이터를 더 안정적이고 장기 보관 가능한 구조로 만들기 위해
+          <b>Veeam Backup & Replication과 FalconStor VTL(가상 테이프 라이브러리)</b>을 연동한 백업 시스템을 구축한 사례입니다.
+        </p>
+        <p>
+          SAN 기반 FC(Fibre Channel) 환경에서 VTL 볼륨을 클라이언트 서버에 직접 할당하고,
+          Veeam을 이용해 Disk → Virtual Tape → 장기 보관(Archive) 구조를 구성하여
+          기존 고객사의 백업 체계를 엔터프라이즈급으로 확장하는 것을 목표로 했습니다.
+        </p>
+      </section>
+
+      <section>
+        <h2>프로젝트 목표</h2>
+        <ul>
+          <li>Veeam 백업 솔루션과 FalconStor VTL을 연동하여 중앙집중식 백업 환경 구축</li>
+          <li>Client 서버가 가상 Tape Library를 직접 인식할 수 있도록 SAN Zoning 구성</li>
+          <li>장기 보관 백업 아키텍처(D2D2T: Disk → Disk → Tape) 구현</li>
+          <li>백업 데이터 암호화 및 무결성 유지</li>
+          <li>백업 성능 및 안정성 향상</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>구성 절차</h2>
+
+        <h3>1. SAN Zoning 구성 (Brocade/Fabric 환경)</h3>
+        <h4>수행 작업</h4>
+        <ul>
+          <li>Client 서버 HBA WWN 확인</li>
+          <li>FalconStor VTL 서버 WWN 확인</li>
+          <li>SAN 스위치에서 아래 구조로 Zone 구성</li>
+          <li>Single Initiator – Single Target 방식 권장</li>
+          <li>Zone 활성화 (ZoneSet Enable)</li>
+        </ul>
+        <h4>결과</h4>
+        <ul>
+          <li>Client Server ↔ FalconStor VTL 간 Fibre Channel 통신 경로 확보</li>
+          <li>OS 수준에서 VTL 장비가 물리 Tape Library처럼 인식될 준비 완료</li>
+        </ul>
+
+        <h3>2. FalconStor VTL 구성</h3>
+        <h4>주요 작업</h4>
+        <ul>
+          <li>VTL Library 생성</li>
+          <li>Virtual Tape Drive 수량 설정</li>
+          <li>Slot 용량(테이프 개수) 구성</li>
+          <li>자동 Tape Rotation 정책 설정</li>
+          <li>FC Target 포트 활성화</li>
+          <li>Client 서버 WWN을 선택해 VTL Library 매핑</li>
+        </ul>
+        <h4>결과</h4>
+        <ul>
+          <li>Client 서버가 물리 Tape Library처럼 가상 테이프 드라이브와 카트리지를 인식할 수 있는 상태 확보</li>
+        </ul>
+
+        <h3>3. Client 서버에서 VTL 인식 테스트</h3>
+        <h4>AIX/Linux/Windows OS 공통 고려사항</h4>
+        <ul>
+          <li>OS에서 FC 스캔</li>
+          <li>Tape Library 장비 인식(dmesg or device manager 확인)</li>
+          <li>Medium Changer, Tape Drive 정상 등록 확인</li>
+        </ul>
+        <h4>결과</h4>
+        <ul>
+          <li>OS에서 FalconStor VTL이 정상적으로 "테이프 장비"로 인식됨</li>
+          <li>Veeam에서 해당 테이프 장비를 선택해 Job 생성 가능</li>
+        </ul>
+
+        <h3>4. Veeam Backup & Replication 연동</h3>
+        <h4>구성 내용</h4>
+        <ul>
+          <li>Veeam Console에서 Tape Infrastructure 메뉴 진입</li>
+          <li>Add Tape Server → Client 서버 선택</li>
+          <li>Add Tape Library → FalconStor VTL 자동 검색</li>
+          <li>Backup Job 생성 (Disk → Tape Job)</li>
+          <li>GFS Backup 정책 적용 (Weekly / Monthly / Yearly)</li>
+        </ul>
+        <h4>결과</h4>
+        <ul>
+          <li>운영 서버 백업 → VTL로 자동 이관되는 D2D2T 백업 구조 완성</li>
+          <li>장기 보관(LT0) 정책 적용 가능</li>
+        </ul>
+
+        <h3>5. 백업 정책 설정</h3>
+        <table>
+          <tr>
+            <th>백업 종류</th>
+            <th>정책</th>
+          </tr>
+          <tr>
+            <td>Daily Backup</td>
+            <td>Disk Backup</td>
+          </tr>
+          <tr>
+            <td>Weekly Backup</td>
+            <td>Tape Full Backup</td>
+          </tr>
+          <tr>
+            <td>Monthly Archive</td>
+            <td>Virtual Tape Export(자동)</td>
+          </tr>
+          <tr>
+            <td>Long-term Retention</td>
+            <td>VTL Tape Vaulting 적용</td>
+          </tr>
+        </table>
+        <div class="highlight-box">
+          <h4>장점</h4>
+          <ul>
+            <li>랜섬웨어나 서버 장애 발생 시 테이프 기반 백업으로 빠르게 복구 가능</li>
+            <li>Snapshot + Tape 구조로 복구 시나리오 다중 확보</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>장애/복구 테스트 수행</h2>
+        <ul>
+          <li>백업 데이터 Tape Restore 테스트</li>
+          <li>특정 시점 파일 복구(File-level Restore)</li>
+          <li>Tape Library Slot 이동(Mount/Unmount) 테스트</li>
+          <li>실제 백업 볼륨 크기 증가 시 자동 카트리지 할당 테스트</li>
+        </ul>
+        <p><b>결과:</b> 모든 회차 Job 성공, 실제 운영 환경에서 안정적으로 백업 수행됨</p>
+      </section>
+
+      <section>
+        <h2>프로젝트 결과 요약</h2>
+        <table>
+          <tr>
+            <th>항목</th>
+            <th>결과</th>
+          </tr>
+          <tr>
+            <td>SAN Zoning</td>
+            <td>정상</td>
+          </tr>
+          <tr>
+            <td>VTL Library 구성</td>
+            <td>성공</td>
+          </tr>
+          <tr>
+            <td>Client 서버 Tape 인식</td>
+            <td>정상</td>
+          </tr>
+          <tr>
+            <td>Veeam Tape Job 실행</td>
+            <td>성공</td>
+          </tr>
+          <tr>
+            <td>LT0 Archive 정책</td>
+            <td>정상</td>
+          </tr>
+          <tr>
+            <td>복구 테스트</td>
+            <td>성공</td>
+          </tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>프로젝트 성과</h2>
+        <ul>
+          <li>엔터프라이즈 SAN 기반 가상 테이프 백업 환경 구축</li>
+          <li>Veeam + FalconStor VTL 연동 성공</li>
+          <li>Long-term(장기) 보관이 가능한 Tape 구조 확립</li>
+          <li>운영 서버 백업 안정성 및 DR 대응력 크게 향상</li>
+          <li>클라이언트 서버–VTL 간 Fibre Channel 백업 성능 개선</li>
+          <li>고객사의 전체 백업 체계를 업그레이드하는 기반 마련</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>학습 및 경험</h2>
+        <ul>
+          <li>Brocade SAN Switch WWN Zoning 구성</li>
+          <li>FalconStor VTL Tape Library 설계</li>
+          <li>Veeam Backup & Replication Tape Job 구성</li>
+          <li>FC 기반 Storage Networking 이해</li>
+          <li>Backup/Restore 및 장기 보관 전략 설계</li>
+          <li>D2D2T 백업 아키텍처 구축 기술</li>
+          <li>OS 레벨 Tape Device 인식 트러블슈팅</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
+
