@@ -194,26 +194,32 @@
     </header>
 
   
+    <!-- ===== 소개 ===== -->
     <section id="about">
-      <h2>소개</h2>
-      <p>
-        인프라를 직접 구성하고 수정하며 배우는 걸 좋아합니다. 온프레미스 환경에서 엔터프라이즈 백업 솔루션(FalconStor, Veeam)<br/>
-        SAN 스위치 조닝, 서버 하드웨어 유지보수 및 OS 운영 경험을 쌓았으며,<br/>
-        VMware와 LocalStack을 활용하여 로컬 환경에서 3-Tier 아키텍처를 구축하고<br/>
-        AWS 상에서 3-Tier 아키텍처, VPC/NAT/OpenVPN, ECS + ALB + ECR, GitLab & GitHub를 이용한 Terraform 기반 자동 배포 등을<br/>
-        실습하고 있습니다.<br/>
-      </p>
+      <h2 class="project-section-header collapsed" onclick="toggleSection('about')" style="margin: 0 0 1rem 0;">
+        <span class="toggle-icon">▼</span>
+        소개
+      </h2>
+      <div class="project-section-content collapsed" id="about-content">
+        <p>
+          인프라를 직접 구성하고 수정하며 배우는 걸 좋아합니다. 온프레미스 환경에서 엔터프라이즈 백업 솔루션(FalconStor, Veeam)<br/>
+          SAN 스위치 조닝, 서버 하드웨어 유지보수 및 OS 운영 경험을 쌓았으며,<br/>
+          VMware와 LocalStack을 활용하여 로컬 환경에서 3-Tier 아키텍처를 구축하고<br/>
+          AWS 상에서 3-Tier 아키텍처, VPC/NAT/OpenVPN, ECS + ALB + ECR, GitLab & GitHub를 이용한 Terraform 기반 자동 배포 등을<br/>
+          실습하고 있습니다.<br/>
+        </p>
 
-      <!-- ===== 기술 스택 ===== -->
-      <h3 style="font-size: 1.2rem; margin: 2rem 0 1rem; color: #f9fafb;">기술 스택</h3>
-      <ul>
-        <li><b>AWS</b>: VPC, Subnet, IGW, NAT Gateway/Instance, EC2, ALB, ECS(EC2 & Fargate), ECR, S3, CloudFront, DynamoDB</li>
-        <li><b>Infra as Code</b>: Terraform (VPC, EC2, SG, OpenVPN, ECS, ALB 등 모듈 구성 및 remote state)</li>
-        <li><b>CI/CD</b>: GitHub Actions, GitLab CI, Docker 기반 GitLab Runner</li>
-        <li><b>네트워크 & 보안</b>: VPC Peering, NAT, OpenVPN, 보안 그룹, 라우팅 테이블 트러블슈팅</li>
-        <li><b>가상화 & 로컬 개발</b>: VMware 17.5 Pro, LocalStack(AWS 서비스 에뮬레이션), Docker</li>
-        <li><b>온프레미스 인프라</b>: FalconStor Backup, Veeam Backup, Brocade SAN Switch 조닝, Dell EMC 서버 유지보수, AIX 운영 및 트러블슈팅</li>
-      </ul>
+        <!-- ===== 기술 스택 ===== -->
+        <h3 style="font-size: 1.2rem; margin: 2rem 0 1rem; color: #f9fafb;">기술 스택</h3>
+        <ul>
+          <li><b>AWS</b>: VPC, Subnet, IGW, NAT Gateway/Instance, EC2, ALB, ECS(EC2 & Fargate), ECR, S3, CloudFront, DynamoDB</li>
+          <li><b>Infra as Code</b>: Terraform (VPC, EC2, SG, OpenVPN, ECS, ALB 등 모듈 구성 및 remote state)</li>
+          <li><b>CI/CD</b>: GitHub Actions, GitLab CI, Docker 기반 GitLab Runner</li>
+          <li><b>네트워크 & 보안</b>: VPC Peering, NAT, OpenVPN, 보안 그룹, 라우팅 테이블 트러블슈팅</li>
+          <li><b>가상화 & 로컬 개발</b>: VMware 17.5 Pro, LocalStack(AWS 서비스 에뮬레이션), Docker</li>
+          <li><b>온프레미스 인프라</b>: FalconStor Backup, Veeam Backup, Brocade SAN Switch 조닝, Dell EMC 서버 유지보수, AIX 운영 및 트러블슈팅</li>
+        </ul>
+      </div>
     </section>
 
     <!-- ===== 경력사항 ===== -->
