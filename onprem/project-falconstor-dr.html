@@ -130,7 +130,7 @@
         <h2>프로젝트 개요</h2>
         <p>
           고객사 도곡동 본사에 위치한 VMware ESXi 환경에서 장애가 발생하여 VM 데이터 접근이 불가능해진 상황에서,
-          FalconStor NSS(Next-Generation Storage Server)를 활용하여 DR(Disaster Recovery) 센터인
+          FalconStor NSS(Network Storage Server)를 활용하여 DR(Disaster Recovery) 센터인
           삼각지 ESXi 서버로 볼륨을 복구한 업무 수행 사례입니다.
         </p>
         <p>
@@ -142,9 +142,9 @@
       <section>
         <h2>프로젝트 목표</h2>
         <ul>
-          <li>도곡동 ESXi에서 장애가 발생한 VM 볼륨을 식별</li>
-          <li>FalconStor NSS 백업 스토리지에 저장된 LUN/Volume 스냅샷 확보</li>
-          <li>삼각지 DR 센터의 ESXi 서버로 해당 볼륨을 재매핑</li>
+          <li>도곡동 본사에 발생한 장애로 인한 ESXI 서버 무력화 상황 가정</li>
+          <li>본사와 Replication 구성 된 삼각지 DR 센터 FalconStor NSS 백업 스토리지에 저장된 LUN/Volume 스냅샷 확보</li>
+          <li>삼각지 DR 센터의 ESXi 서버로 해당 스냅샷 볼륨을 재매핑</li>
           <li>VMware에서 VM 복구 및 정상 부팅 확인</li>
           <li>서비스 다운타임 최소화 및 데이터 무결성 검증</li>
         </ul>
@@ -185,7 +185,7 @@
         
         <h3>1. 장애 상황 분석</h3>
         <ul>
-          <li>도곡동 ESXi의 특정 Datastore에서 I/O Hang 현상 발생</li>
+          <li>도곡동 ESXi 서버에서 장애 상황 발생</li>
           <li>VM 전원이 꺼지는 문제 및 VMDK 접근 불가</li>
           <li>스토리지에서 대상 LUN이 정상적으로 mount되지 않음</li>
           <li>DR 복구 절차 진행 결정</li>
@@ -292,21 +292,6 @@
           <li>DR 운영 프로세스 설계 및 트러블슈팅</li>
           <li>실제 장애 대응 경험 기반 문제 해결 능력</li>
         </ul>
-      </section>
-
-      <section>
-        <h2>기술 스택</h2>
-        <div class="tags">
-          <span class="tag">FalconStor NSS</span>
-          <span class="tag">VMware ESXi</span>
-          <span class="tag">Disaster Recovery</span>
-          <span class="tag">Fibre Channel</span>
-          <span class="tag">Block-level Replication</span>
-          <span class="tag">Snapshot</span>
-          <span class="tag">LUN Mapping</span>
-          <span class="tag">Datastore Resignature</span>
-          <span class="tag">VM Recovery</span>
-        </div>
       </section>
     </div>
   </div>
