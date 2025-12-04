@@ -224,12 +224,12 @@
           <li>웹 브라우저를 통해 플랫폼에 접근하며, Cloudflare 인증을 통과한 사용자만 내부 리소스에 접근 가능</li>
         </ul>
 
-        <h3>2. Cloudflare Tunnel (Zero Trust Access)</h3>
+        <h3>2. Cloudflare Tunnel (임시 HTTPS 터널 서비스)</h3>
         <ul>
-          <li>내부 서버를 외부 인터넷에 직접 노출하지 않고도 안전하게 접근 가능</li>
+          <li>내부 서버를 외부에 직접 노출하지 않고도 접근할 수 있도록 도와주는 임시 HTTPS 터널 서비스</li>
           <li>HTTPS 터널 기반 보안 강화</li>
-          <li>사용자 인증 (Google, GitHub 등 SSO 연동 가능)</li>
-          <li>Cloudflare는 전체 인프라의 Zero Trust Gate 역할을 수행하여, 로컬 VMware 환경에서도 엔터프라이즈 수준의 보안을 확보함</li>
+          <li>공인 IP 없이도 외부 접속 가능</li>
+          <li>포트포워딩 설정 없이 로컬 VMware 환경의 Web, API, MinIO, LocalStack 등에 접근할 때 사용</li>
         </ul>
 
         <h3>3. HAProxy Server</h3>
@@ -319,7 +319,7 @@
           </tr>
           <tr>
             <td>보안</td>
-            <td>Cloudflare Zero Trust 도입으로 로컬 환경에서도 엔터프라이즈급 보안 확보</td>
+            <td>Cloudflare 임시터널 도입으로 로컬 환경에서도 엔터프라이즈급 보안 확보</td>
           </tr>
           <tr>
             <td>스토리지</td>
