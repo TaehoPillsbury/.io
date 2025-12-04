@@ -338,89 +338,26 @@
       <div class="project-section-content collapsed" id="onprem-content">
         <div class="card-grid">
 
-        <!-- 프로젝트 6: FalconStor Backup -->
+        <!-- 프로젝트 4: FalconStor NSS DR 복구 -->
         <div class="card">
-          <h3><a href="onprem/project-falconstor.html">FalconStor Backup 솔루션 운영</a></h3>
+          <h3><a href="onprem/project-falconstor-dr.html">FalconStor NSS 기반 ESXi DR 복구 프로젝트</a></h3>
           <div class="meta">온프레미스 환경 | 실무 경험</div>
           <p>
-            엔터프라이즈 환경에서 FalconStor Backup 솔루션을 운영하며<br/>
-            백업 정책 수립, 스케줄 관리, 복구 작업 등을 수행했습니다.
+            도곡동 본사 ESXi 장애 발생 시 FalconStor NSS의 Snapshot Replica를 활용해<br/>
+            삼각지 DR센터 ESXi 서버로 신속하게 Volume을 매핑하고 VM 복구를 수행했습니다.
           </p>
           <ul>
-            <li>FalconStor Backup 솔루션 설치 및 구성</li>
-            <li>전체 백업(Full) 및 증분 백업(Incremental) 정책 수립</li>
-            <li>복구 테스트 수행 및 복구 절차 문서화</li>
-            <li>백업 작업 모니터링 및 장애 대응</li>
+            <li>FalconStor NSS Block-level Replication 및 Snapshot 기능 활용</li>
+            <li>DR ESXi 서버로 iSCSI LUN 재매핑 및 Datastore 복구</li>
+            <li>VMware VM 재등록 및 부팅 성공, 데이터 무결성 검증</li>
+            <li>RTO 약 40분 내 복구 달성, 서비스 중단 시간 최소화</li>
           </ul>
           <div class="tags">
-            <span class="tag">FalconStor</span>
-            <span class="tag">Backup</span>
-            <span class="tag">Enterprise</span>
-          </div>
-        </div>
-
-        <!-- 프로젝트 7: Veeam Backup -->
-        <div class="card">
-          <h3><a href="onprem/project-veeam.html">Veeam Backup 솔루션 운영</a></h3>
-          <div class="meta">온프레미스 환경 | 실무 경험</div>
-          <p>
-            가상화 환경(VMware, Hyper-V)에서 Veeam Backup을 활용하여<br/>
-            VM 레벨 백업 및 복원 작업을 수행했습니다.
-          </p>
-          <ul>
-            <li>가상화 환경(VMware, Hyper-V) 백업 구성</li>
-            <li>VM 레벨 백업 및 복원 작업</li>
-            <li>백업 작업 스케줄링 및 자동화</li>
-            <li>백업 저장소 최적화 및 모니터링</li>
-          </ul>
-          <div class="tags">
-            <span class="tag">Veeam</span>
-            <span class="tag">Backup</span>
-            <span class="tag">VMware</span>
-          </div>
-        </div>
-
-        <!-- 프로젝트 8: Storage -->
-        <div class="card">
-          <h3><a href="onprem/project-storage.html">스토리지 시스템 운영 및 관리</a></h3>
-          <div class="meta">온프레미스 환경 | 실무 경험</div>
-          <p>
-            SAN 스토리지 네트워크 및 스토리지 시스템을 관리하며<br/>
-            스토리지 접근 제어 및 성능 최적화를 수행했습니다.
-          </p>
-          <ul>
-            <li>Brocade SAN Switch 조닝 구성 및 관리</li>
-            <li>Dell Storage(Unity, PowerStore) 시스템 관리</li>
-            <li>HP Storage(MSA, 3PAR) 시스템 관리</li>
-            <li>LUN 생성 및 관리, 스토리지 성능 모니터링</li>
-          </ul>
-          <div class="tags">
-            <span class="tag">SAN Switch</span>
-            <span class="tag">Dell Storage</span>
-            <span class="tag">HP Storage</span>
-            <span class="tag">Brocade</span>
-          </div>
-        </div>
-
-        <!-- 프로젝트 9: Server -->
-        <div class="card">
-          <h3><a href="onprem/project-server.html">서버 하드웨어 및 시스템 운영</a></h3>
-          <div class="meta">온프레미스 환경 | 실무 경험</div>
-          <p>
-            서버 하드웨어 유지보수 및 유닉스 시스템 운영을 통해<br/>
-            안정적인 인프라 운영을 수행했습니다.
-          </p>
-          <ul>
-            <li>Dell EMC PowerEdge 시리즈 서버 유지보수</li>
-            <li>HP Gen 시리즈 서버 유지보수</li>
-            <li>AIX 시스템 운영 및 성능 튜닝</li>
-            <li>RAID 구성, 원격 관리(iDRAC, iLO), 장애 대응</li>
-          </ul>
-          <div class="tags">
-            <span class="tag">Dell EMC</span>
-            <span class="tag">HP Gen</span>
-            <span class="tag">AIX</span>
-            <span class="tag">Server</span>
+            <span class="tag">FalconStor NSS</span>
+            <span class="tag">VMware ESXi</span>
+            <span class="tag">Disaster Recovery</span>
+            <span class="tag">iSCSI</span>
+            <span class="tag">Block-level Replication</span>
           </div>
         </div>
 
