@@ -253,24 +253,27 @@
       <div class="project-section-content collapsed" id="cloud-content">
         <div class="card-grid">
 
-        <!-- 프로젝트 1: 게임 + AWS 백엔드 -->
+        <!-- 프로젝트 1: CloudFront 기반 정적 웹게임 자동 배포 -->
         <div class="card">
-          <h3><a href="cloud/project-game-backend.html">웹/모바일 게임 백엔드 AWS 연동 (진행 중)</a></h3>
-          <div class="meta">진행 중</div>
+          <h3><a href="cloud/project-game-backend.html">CloudFront 기반 정적 웹게임 자동 배포 서비스 구축</a></h3>
+          <div class="meta">2025 | AWS 베스트 프랙티스 기반 CI/CD 구축</div>
           <p>
-            HTML/JS 또는 Unity로 만든 간단한 게임의 점수/랭킹 데이터를<br/>
-            AWS API Gateway + Lambda + DynamoDB로 저장하는 구조를 설계 중입니다.
+            HTML·CSS·JavaScript로 개발된 정적 웹 게임을<br/>
+            AWS S3 + CloudFront(OAC) 구조에서 호스팅하고,
+            GitHub Actions를 활용해 코드 변경 시 자동 배포되도록 구성했습니다.
           </p>
           <ul>
-            <li>정적 웹은 S3 + CloudFront로 호스팅</li>
-            <li>DynamoDB 테이블 설계 (userId, score, timestamp 등)</li>
-            <li>CI/CD와 연동하여 코드 수정 시 자동 배포 목표</li>
+            <li>S3 버킷을 Public으로 열지 않고 CloudFront OAC를 통한 안전한 파일 제공</li>
+            <li>GitHub Actions 기반 CI/CD 자동 배포 파이프라인 구축</li>
+            <li>코드 수정 시 자동으로 S3 동기화 + CloudFront 캐시 무효화</li>
+            <li>AWS 베스트 프랙티스 기반 보안 설정 적용</li>
           </ul>
           <div class="tags">
-            <span class="tag">Game</span>
-            <span class="tag">API Gateway</span>
-            <span class="tag">Lambda</span>
-            <span class="tag">DynamoDB</span>
+            <span class="tag">S3</span>
+            <span class="tag">CloudFront</span>
+            <span class="tag">OAC</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">CI/CD</span>
           </div>
         </div>
 
