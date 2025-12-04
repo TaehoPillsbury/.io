@@ -79,13 +79,15 @@
       color: #e5e7eb;
     }
     .card h3 a {
-      color: #e5e7eb;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .card h3 a:hover {
       color: #38bdf8;
       text-decoration: underline;
+      text-decoration-style: solid;
+      text-underline-offset: 3px;
+      transition: color 0.2s, text-decoration-color 0.2s;
+    }
+    .card h3 a:hover {
+      color: #60a5fa;
+      text-decoration-color: #60a5fa;
     }
     .card .meta {
       font-size: 0.8rem;
