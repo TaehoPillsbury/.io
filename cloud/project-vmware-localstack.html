@@ -84,6 +84,21 @@
       font-size: 0.9em;
       color: #60a5fa;
     }
+    pre {
+      background: #020617;
+      border: 1px solid #1f2937;
+      border-radius: 0.25rem;
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: #e5e7eb;
+      font-size: 0.9em;
+      line-height: 1.5;
+    }
     .highlight-box {
       background: #020617;
       border-left: 3px solid #38bdf8;
@@ -91,12 +106,48 @@
       margin: 1.5rem 0;
       border-radius: 0.25rem;
     }
-    .tech-stack {
-      background: #020617;
-      border: 1px solid #1f2937;
-      border-radius: 0.5rem;
-      padding: 1rem;
+    .toggle-header {
+      cursor: pointer;
+      user-select: none;
+      padding: 0.75rem 1rem;
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 0.25rem;
       margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .toggle-header:hover {
+      background: #374151;
+    }
+    .toggle-icon {
+      transition: transform 0.3s ease;
+      color: #9ca3af;
+    }
+    .toggle-header.collapsed .toggle-icon {
+      transform: rotate(-90deg);
+    }
+    .toggle-content {
+      display: none;
+      margin-top: 0.5rem;
+    }
+    .toggle-content.expanded {
+      display: block;
+    }
+    .tags {
+      margin: 1.5rem 0;
+    }
+    .tag {
+      display: inline-block;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: #111827;
+      border: 1px solid #1f2937;
+      color: #9ca3af;
+      font-size: 0.85rem;
     }
     table {
       width: 100%;
@@ -113,18 +164,16 @@
       color: #e5e7eb;
       font-weight: 600;
     }
-    .component-box {
-      background: #020617;
-      border: 1px solid #374151;
+    img {
+      max-width: 100%;
+      height: auto;
       border-radius: 0.5rem;
-      padding: 1rem 1.5rem;
-      margin: 1rem 0;
+      border: 1px solid #1f2937;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
-    .component-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #38bdf8;
-      margin-bottom: 0.5rem;
+    .image-container {
+      text-align: center;
+      margin: 2rem 0;
     }
   </style>
 </head>
@@ -154,109 +203,109 @@
       </section>
 
       <section>
+        <h2>구성도</h2>
+        <div class="image-container">
+          <img src="../PPT/localstack.png" alt="LocalStack 플랫폼 구성도" />
+        </div>
+      </section>
+
+      <section>
         <h2>환경 및 기술 스택</h2>
-        <div class="tech-stack">
-          <p><b>환경:</b> VMware Workstation Pro 17.5</p>
-          <p><b>기술 스택:</b> LocalStack, MinIO, Cloudflare Tunnel, Kubernetes(k3s), HAProxy, Lambda(LocalStack), DynamoDB(Local), IAM(LocalStack), SQS(LocalStack), Docker, AWS CLI Container, Veeam Backup</p>
+        <p><b>환경:</b> VMware Workstation Pro 17.5</p>
+        <p><b>기술 스택:</b> LocalStack, MinIO, Cloudflare Tunnel, Kubernetes(k3s), HAProxy, Lambda(LocalStack), DynamoDB(Local), IAM(LocalStack), SQS(LocalStack), Docker, AWS CLI Container, Veeam Backup</p>
+        <div class="tags">
+          <span class="tag">VMware</span>
+          <span class="tag">LocalStack</span>
+          <span class="tag">Kubernetes</span>
+          <span class="tag">MinIO</span>
+          <span class="tag">Cloudflare</span>
+          <span class="tag">Lambda</span>
+          <span class="tag">HAProxy</span>
+          <span class="tag">DynamoDB</span>
+          <span class="tag">SQS</span>
+          <span class="tag">Docker</span>
+          <span class="tag">Veeam</span>
         </div>
       </section>
 
       <section>
         <h2>시스템 아키텍처 및 구성 요소</h2>
 
-        <div class="component-box">
-          <div class="component-title">✅ 사용자(User)</div>
-          <ul>
-            <li>웹 브라우저를 통해 플랫폼에 접근하며, Cloudflare 인증을 통과한 사용자만 내부 리소스에 접근 가능</li>
-          </ul>
-        </div>
+        <h3>✅ 사용자(User)</h3>
+        <ul>
+          <li>웹 브라우저를 통해 플랫폼에 접근하며, Cloudflare 인증을 통과한 사용자만 내부 리소스에 접근 가능</li>
+        </ul>
 
-        <div class="component-box">
-          <div class="component-title">☁️ Cloudflare Tunnel (Zero Trust Access)</div>
-          <ul>
-            <li>내부 서버를 외부 인터넷에 직접 노출하지 않고도 안전하게 접근 가능</li>
-            <li>HTTPS 터널 기반 보안 강화</li>
-            <li>사용자 인증 (Google, GitHub 등 SSO 연동 가능)</li>
-            <li>Cloudflare는 전체 인프라의 Zero Trust Gate 역할을 수행하여, 로컬 VMware 환경에서도 엔터프라이즈 수준의 보안을 확보함</li>
-          </ul>
-        </div>
+        <h3>☁️ Cloudflare Tunnel (Zero Trust Access)</h3>
+        <ul>
+          <li>내부 서버를 외부 인터넷에 직접 노출하지 않고도 안전하게 접근 가능</li>
+          <li>HTTPS 터널 기반 보안 강화</li>
+          <li>사용자 인증 (Google, GitHub 등 SSO 연동 가능)</li>
+          <li>Cloudflare는 전체 인프라의 Zero Trust Gate 역할을 수행하여, 로컬 VMware 환경에서도 엔터프라이즈 수준의 보안을 확보함</li>
+        </ul>
 
-        <div class="component-box">
-          <div class="component-title">💻 WEB Server (HAProxy)</div>
-          <ul>
-            <li>정적 웹 페이지 및 사용자 요청을 받아 템플릿 렌더링</li>
-            <li>로컬 환경에서 API Gateway 또는 LocalStack 서비스로 프록시 역할 수행</li>
-            <li>스케일 아웃이 가능한 가벼운 웹 서버 구조</li>
-          </ul>
-        </div>
+        <h3>💻 WEB Server (HAProxy)</h3>
+        <ul>
+          <li>정적 웹 페이지 및 사용자 요청을 받아 템플릿 렌더링</li>
+          <li>로컬 환경에서 API Gateway 또는 LocalStack 서비스로 프록시 역할 수행</li>
+          <li>스케일 아웃이 가능한 가벼운 웹 서버 구조</li>
+        </ul>
 
-        <div class="component-box">
-          <div class="component-title">📦 MinIO (S3 Object Storage 대체)</div>
-          <ul>
-            <li>로컬 환경에서 S3 오브젝트 스토리지를 완전히 대체</li>
-            <li>포트: 9000(API), 9001(Console)</li>
-            <li><b>주요 역할:</b></li>
-            <li style="margin-left: 1rem;">- 정적 웹 사이트 호스팅</li>
-            <li style="margin-left: 1rem;">- Lambda 패키지 저장</li>
-            <li style="margin-left: 1rem;">- 배포 로그/결과 백업 저장소</li>
-            <li>AWS S3와 100% API 호환되므로 boto3, AWS CLI로 그대로 접근 가능</li>
-          </ul>
-        </div>
+        <h3>📦 MinIO (S3 Object Storage 대체)</h3>
+        <ul>
+          <li>로컬 환경에서 S3 오브젝트 스토리지를 완전히 대체</li>
+          <li>포트: <code>9000</code>(API), <code>9001</code>(Console)</li>
+          <li><b>주요 역할:</b></li>
+          <li>- 정적 웹 사이트 호스팅</li>
+          <li>- Lambda 패키지 저장</li>
+          <li>- 배포 로그/결과 백업 저장소</li>
+          <li>AWS S3와 100% API 호환되므로 boto3, AWS CLI로 그대로 접근 가능</li>
+        </ul>
 
-        <div class="component-box">
-          <div class="component-title">🧪 LocalStack (AWS 클라우드 환경 재현 플랫폼)</div>
-          <ul>
-            <li>포트: 4566</li>
-            <li>Lambda, API Gateway, DynamoDB, IAM, SQS 등 모든 AWS 서비스가 로컬에서 실행</li>
-            <li>AWS 비용 없이도 실제 AWS 구조와 동일하게 개발/테스트 가능</li>
-            <li><b>구성 요소:</b></li>
-            <li style="margin-left: 1rem;"><b>Lambda:</b> API Gateway 요청을 받아 Kubernetes(k3s)에 Deploy 생성</li>
-            <li style="margin-left: 1rem;"><b>API Gateway:</b> 사용자 요청을 받아 Lambda로 전달</li>
-            <li style="margin-left: 1rem;"><b>DynamoDB (LocalStack):</b> 생성된 Deploy 정보를 로그로 저장</li>
-            <li style="margin-left: 1rem;"><b>IAM:</b> Lambda, S3, DynamoDB 등에 대한 권한 정책 관리</li>
-            <li style="margin-left: 1rem;"><b>SQS:</b> 사용자 API 요청을 큐잉하여 순차 처리, 병렬 처리 시 충돌 방지</li>
-          </ul>
-        </div>
+        <h3>🧪 LocalStack (AWS 클라우드 환경 재현 플랫폼)</h3>
+        <ul>
+          <li>포트: <code>4566</code></li>
+          <li>Lambda, API Gateway, DynamoDB, IAM, SQS 등 모든 AWS 서비스가 로컬에서 실행</li>
+          <li>AWS 비용 없이도 실제 AWS 구조와 동일하게 개발/테스트 가능</li>
+          <li><b>구성 요소:</b></li>
+          <li><b>Lambda:</b> API Gateway 요청을 받아 Kubernetes(k3s)에 Deploy 생성</li>
+          <li><b>API Gateway:</b> 사용자 요청을 받아 Lambda로 전달</li>
+          <li><b>DynamoDB (LocalStack):</b> 생성된 Deploy 정보를 로그로 저장</li>
+          <li><b>IAM:</b> Lambda, S3, DynamoDB 등에 대한 권한 정책 관리</li>
+          <li><b>SQS:</b> 사용자 API 요청을 큐잉하여 순차 처리, 병렬 처리 시 충돌 방지</li>
+        </ul>
 
-        <div class="component-box">
-          <div class="component-title">🐳 AWS CLI Container</div>
-          <ul>
-            <li>AWS 서비스 프로비저닝 및 관리</li>
-            <li>LocalStack 테스트용 CLI 환경</li>
-            <li>Lambda 패키지 업로드, API Gateway 구성 등 자동화에 활용</li>
-          </ul>
-        </div>
+        <h3>🐳 AWS CLI Container</h3>
+        <ul>
+          <li>AWS 서비스 프로비저닝 및 관리</li>
+          <li>LocalStack 테스트용 CLI 환경</li>
+          <li>Lambda 패키지 업로드, API Gateway 구성 등 자동화에 활용</li>
+        </ul>
 
-        <div class="component-box">
-          <div class="component-title">🔒 Veeam Backup (VM Backup)</div>
-          <ul>
-            <li>VMware 가상머신의 전체 백업 및 복구 구성</li>
-            <li>실무형 인프라 운영 환경을 그대로 반영</li>
-          </ul>
-        </div>
+        <h3>🔒 Veeam Backup (VM Backup)</h3>
+        <ul>
+          <li>VMware 가상머신의 전체 백업 및 복구 구성</li>
+          <li>실무형 인프라 운영 환경을 그대로 반영</li>
+        </ul>
 
-        <div class="component-box">
-          <div class="component-title">☸️ Kubernetes (k3s Cluster)</div>
-          <ul>
-            <li>로컬 서버에서 경량 Kubernetes 클러스터 운영</li>
-            <li>Lambda의 요청을 받아 Deployment 생성</li>
-            <li>Service, ReplicaSet, Pod 관리</li>
-            <li>Dev/Test 환경에서 실무용 컨테이너 오케스트레이션 구성</li>
-            <li><b>역할:</b></li>
-            <li style="margin-left: 1rem;">- 컨테이너 기반 애플리케이션 실행</li>
-            <li style="margin-left: 1rem;">- 멀티 노드(k3s master + worker 구성)</li>
-            <li style="margin-left: 1rem;">- Lambda 기반 자동화와 연동</li>
-          </ul>
-        </div>
+        <h3>☸️ Kubernetes (k3s Cluster)</h3>
+        <ul>
+          <li>로컬 서버에서 경량 Kubernetes 클러스터 운영</li>
+          <li>Lambda의 요청을 받아 Deployment 생성</li>
+          <li>Service, ReplicaSet, Pod 관리</li>
+          <li>Dev/Test 환경에서 실무용 컨테이너 오케스트레이션 구성</li>
+          <li><b>역할:</b></li>
+          <li>- 컨테이너 기반 애플리케이션 실행</li>
+          <li>- 멀티 노드(k3s master + worker 구성)</li>
+          <li>- Lambda 기반 자동화와 연동</li>
+        </ul>
 
-        <div class="component-box">
-          <div class="component-title">🧾 DynamoDB(LocalStack)</div>
-          <ul>
-            <li>Lambda에서 생성한 Deploy 로그 저장소</li>
-            <li>배포 이력 조회 및 상태 모니터링에 사용</li>
-            <li>완전한 NoSQL 환경을 로컬에서 재현</li>
-          </ul>
-        </div>
+        <h3>🧾 DynamoDB(LocalStack)</h3>
+        <ul>
+          <li>Lambda에서 생성한 Deploy 로그 저장소</li>
+          <li>배포 이력 조회 및 상태 모니터링에 사용</li>
+          <li>완전한 NoSQL 환경을 로컬에서 재현</li>
+        </ul>
       </section>
 
       <section>
