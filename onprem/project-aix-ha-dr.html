@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AIX – FalconStor NSS – HP Storage 기반 고가용성(HA) & DR 구성 프로젝트 | 김태호 포트폴리오</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #0f172a;
+      color: #e5e7eb;
+      line-height: 1.6;
+    }
+    a { color: #38bdf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    header {
+      padding: 2rem 0 1rem;
+      border-bottom: 1px solid #1f2937;
+      margin-bottom: 2rem;
+    }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+    .back-link:hover {
+      color: #38bdf8;
+    }
+    h1 {
+      font-size: 2rem;
+      margin: 0 0 0.5rem 0;
+      color: #f9fafb;
+    }
+    .meta {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+
+    .content {
+      margin: 2rem 0;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+      color: #f9fafb;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 0.5rem;
+    }
+    h3 {
+      font-size: 1.2rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #e5e7eb;
+    }
+    h4 {
+      font-size: 1rem;
+      margin: 1rem 0 0.5rem;
+      color: #d1d5db;
+    }
+    p {
+      margin: 1rem 0;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+      margin: 0.75rem 0;
+    }
+    li {
+      margin-bottom: 0.5rem;
+    }
+    code {
+      background: #1f2937;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-size: 0.9em;
+      color: #60a5fa;
+    }
+    .highlight-box {
+      background: #020617;
+      border-left: 3px solid #38bdf8;
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0.25rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #1f2937;
+    }
+    th {
+      background: #020617;
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="../index.html" class="back-link">← 포트폴리오로 돌아가기</a>
+      <h1>AIX – FalconStor NSS – HP Storage 기반 고가용성(HA) & DR 구성 프로젝트</h1>
+      <div class="meta">온프레미스 환경 | 실무 경험 | Brocade SAN 조닝 → Storage 볼륨 매핑 → NSS Snapshot 보호 → AIX 미러링 → 장애 복구까지 End-to-End 구축</div>
+    </header>
+
+    <div class="content">
+      <section>
+        <h2>프로젝트 개요</h2>
+        <p>
+          IBM Power 시스템(AIX OS 기반)의 핵심 업무 스토리지 환경을 고가용성(High Availability) 및
+          DR(Disaster Recovery)에 대응할 수 있도록 구성한 사례입니다.
+        </p>
+        <p>
+          HP Storage의 엔터프라이즈급 LUN을 FalconStor NSS(Network Storage Service)로 중계 및 보호하고,
+          AIX 서버에는 HP Storage 원본 볼륨과 NSS 보호 볼륨을 <b>미러링(Mirroring)</b>하여
+          장애 발생 시에도 서비스가 지속될 수 있도록 설계했습니다.
+        </p>
+        <p>
+          또한 장애 시점의 NSS Snapshot을 기반으로 장애 시점 이전의 정상 데이터를 AIX에 재할당하여
+          신속하게 원복할 수 있는 체계를 구축하였습니다.
+        </p>
+      </section>
+
+      <section>
+        <h2>프로젝트 목표</h2>
+        <ul>
+          <li>SAN Storage 기반 엔터프라이즈 HA 구조 설계 및 구축</li>
+          <li>HP Storage → FalconStor NSS → AIX 간 End-to-End 데이터 흐름 구성</li>
+          <li>Snapshot 기반 데이터 보호 및 복구 체계 구축</li>
+          <li>미러링 기반 무중단 또는 최소중단 장애 대응 체계 구성</li>
+          <li>스토리지 장애 시 AIX 운영환경을 신속하게 복구하도록 설계</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>구성 절차</h2>
+
+        <h3>1. Brocade SAN 스위치 구성 (WWN Zoning)</h3>
+        <h4>수행 작업</h4>
+        <ul>
+          <li>HP Storage, FalconStor NSS, IBM AIX 서버의 HBA WWN 수집</li>
+          <li>Brocade Fabric OS 접속</li>
+          <li>Single Initiator – Multiple Target 방식으로 Zone 구성</li>
+          <li>Zone → ZoneSet 활성화(Effective)</li>
+        </ul>
+        <h4>결과</h4>
+        <ul>
+          <li>AIX ↔ NSS ↔ HP Storage 간 SAN 연결이 정상적으로 형성됨</li>
+          <li>WWN 조닝으로 스토리지 보안 및 구조적 안정성 확보</li>
+        </ul>
+
+        <h3>2. HP Storage 볼륨(LUN) 생성 및 NSS로 매핑</h3>
+        <h4>수행 작업</h4>
+        <ul>
+          <li>HP Storage에서 신규 LUN 생성</li>
+          <li>LUN 사이즈, RAID 레벨, 패리티 구성</li>
+          <li>FalconStor NSS Host Mapping 수행</li>
+          <li>NSS에서 LUN 인식 확인</li>
+        </ul>
+        <h4>결과</h4>
+        <ul>
+          <li>HP Storage 원본 LUN이 FalconStor NSS에서 Block Device 형태로 정상 인식됨</li>
+        </ul>
+
+        <h3>3. FalconStor NSS 볼륨 보호 정책(Snapshot) 설정</h3>
+        <h4>수행 작업</h4>
+        <ul>
+          <li>NSS에서 해당 볼륨을 Protection Group에 포함</li>
+          <li>Snapshot 스케줄 정의(예: 1시간마다, 24시간 보관)</li>
+          <li>Block-level Snapshot/Replica 활성화</li>
+          <li>Snapshot 자동 증분 모드(Incremental Forever) 설정</li>
+        </ul>
+        <h4>결과</h4>
+        <ul>
+          <li>HP Storage 원본 볼륨이 NSS에서 Snapshot 기반으로 보호됨</li>
+          <li>장애 시 특정 시점으로 복구 가능해짐</li>
+        </ul>
+
+        <h3>4. 보호된 NSS 볼륨을 AIX 서버로 할당</h3>
+        <h4>수행 작업</h4>
+        <ul>
+          <li>NSS에서 AIX WWN을 선택하여 볼륨 매핑</li>
+          <li>SAN 스위치 조닝 already 완료 상태</li>
+          <li>AIX에서 <code>cfgmgr</code>로 신규 디스크 인식</li>
+          <li><code>LSPV</code>를 통해 Disk Identification 수행</li>
+        </ul>
+        <div class="highlight-box">
+          <p><b>주요 AIX 명령어:</b></p>
+          <ul>
+            <li><code>cfgmgr</code> - 장치 구성 매니저 실행</li>
+            <li><code>lsdev -Cc disk</code> - 디스크 장치 확인</li>
+            <li><code>lspv</code> - 물리적 볼륨 목록 확인</li>
+          </ul>
+        </div>
+        <h4>결과</h4>
+        <ul>
+          <li>AIX에서 NSS 제공 LUN이 hdisk 형태로 정상 인식됨</li>
+        </ul>
+
+        <h3>5. AIX: 기존 HP Storage 볼륨 + NSS 볼륨 미러링 구성</h3>
+        <h4>수행 작업</h4>
+        <ul>
+          <li>기존 AIX 볼륨(VG) 구성 확인</li>
+          <li>새로 매핑된 NSS 볼륨을 동일 Volume Group에 추가</li>
+          <li>Logical Volume 레벨에서 Mirror 생성</li>
+        </ul>
+        <div class="highlight-box">
+          <p><b>AIX 미러링 명령어 예시:</b></p>
+          <ul>
+            <li><code>extendvg rootvg hdisk2</code> - Volume Group에 디스크 추가</li>
+            <li><code>mirrorvg rootvg hdisk1 hdisk2</code> - Volume Group 미러링</li>
+            <li><code>syncvg -v rootvg</code> - 볼륨 그룹 동기화</li>
+          </ul>
+        </div>
+        <h4>결과</h4>
+        <ul>
+          <li>HP Storage 볼륨과 NSS Snapshot-Protected 볼륨이 실시간 미러링 상태가 됨</li>
+          <li>원본 장애 시에도 NSS 볼륨으로 운영 가능</li>
+        </ul>
+
+        <h3>6. 장애 발생 시 복구 절차</h3>
+        <p><b>예시 시나리오:</b> HP Storage 원본 볼륨 또는 Path Fail/Corruption 발생</p>
+        <h4>수행 단계</h4>
+        <ol>
+          <li>장애 감지</li>
+          <li>NSS Snapshot 중 장애 이전 정상 시점의 Snapshot 선택</li>
+          <li>Snapshot을 새로운 LUN으로 생성("Clone from Snapshot")</li>
+          <li>SAN Zone 유지 상태에서 해당 Snapshot-LUN을 AIX에 추가 매핑</li>
+          <li>AIX에서 신규 디스크 검색</li>
+          <li>기존 장애 Logical Volume에서 문제 디스크 제거</li>
+          <li>Snapshot 기반 Disk로 자료 재구성 또는 Logical Volume 재확장</li>
+          <li>시스템 재가동 후 서비스 정상화</li>
+        </ol>
+        <h4>결과</h4>
+        <ul>
+          <li>장애 이전의 정상 시점으로 원복 가능</li>
+          <li>데이터 손실 최소화 (RPO ≈ Snapshot 스케줄)</li>
+          <li>서비스 중단 시간 최소화 (RTO 매우 짧음)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>구성 결과 및 성능</h2>
+        <table>
+          <tr>
+            <th>항목</th>
+            <th>결과</th>
+          </tr>
+          <tr>
+            <td>HP Storage ↔ NSS 연동</td>
+            <td>정상</td>
+          </tr>
+          <tr>
+            <td>Snapshot 보호 기능</td>
+            <td>활성</td>
+          </tr>
+          <tr>
+            <td>AIX 미러링</td>
+            <td>정상 동작</td>
+          </tr>
+          <tr>
+            <td>장애 복구 테스트</td>
+            <td>성공</td>
+          </tr>
+          <tr>
+            <td>Snapshot 기반 재할당</td>
+            <td>정상</td>
+          </tr>
+          <tr>
+            <td>SAN Zoning 안정성</td>
+            <td>최적화</td>
+          </tr>
+          <tr>
+            <td>RTO(Recovery Time Objective)</td>
+            <td>20~30분 내 복구</td>
+          </tr>
+          <tr>
+            <td>RPO(Recovery Point Objective)</td>
+            <td>Snapshot 시점 기준 (~1시간 or 설정값)</td>
+          </tr>
+        </table>
+      </section>
+
+      <section>
+        <h2>프로젝트 성과</h2>
+        <ul>
+          <li>AIX 서버의 스토리지 이중화(HA) 구현</li>
+          <li>HP Storage → NSS → AIX 구간 end-to-end DR 체계 구축</li>
+          <li>SAN 환경(Brocade) 전문성 확보</li>
+          <li>Snapshot 기반 장애 복구 자동화·신속성 확보</li>
+          <li>실제 장애 발생 시 정상 시점 Snapshot 볼륨으로 무중단에 가깝게 서비스 복원 성공</li>
+          <li>고객사 서비스 안정성 극대화 및 운영 리스크 제거</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>학습 및 경험</h2>
+        <ul>
+          <li>Brocade SAN 스위치 Fabric OS 운영 및 WWN 기반 Zone 구성</li>
+          <li>HP Storage 엔터프라이즈 LUN 구성 및 RAID 레벨 설계</li>
+          <li>FalconStor NSS Protection Group 및 Snapshot 정책 구성</li>
+          <li>AIX Volume Group, Logical Volume 미러링 구성 및 관리</li>
+          <li>Enterprise 스토리지 환경의 HA & DR 아키텍처 설계</li>
+          <li>장애 시나리오 기반 복구 프로세스 구축 및 테스트</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
+
