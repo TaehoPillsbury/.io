@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>FalconStor NSS 기반 ESXi DR 복구 작업 | 김태호 포트폴리오</title>
+  <title>FalconStor Network Storage Service 기반 ESXi DR 복구 작업 | 김태호 포트폴리오</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
@@ -132,7 +132,7 @@
   <div class="container">
     <header>
       <a href="../index.html" class="back-link">← 포트폴리오로 돌아가기</a>
-      <h1>FalconStor NSS 기반 ESXi DR 복구 작업</h1>
+      <h1>FalconStor Network Storage Service 기반 ESXi DR 복구 작업</h1>
       <div class="meta">온프레미스 환경 | 실무 경험 | 도곡동 본사 ESXi → 삼각지 DR센터 ESXi 복구</div>
     </header>
 
@@ -141,11 +141,11 @@
         <h2>작업 개요</h2>
         <p>
           고객사 도곡동 본사에 위치한 VMware ESXi 환경에서 장애가 발생하여 VM 데이터 접근이 불가능해진 상황에서,
-          FalconStor NSS(Network Storage Server)를 활용하여 DR(Disaster Recovery) 센터인
+          FalconStor Network Storage Service를 활용하여 DR(Disaster Recovery) 센터인
           삼각지 ESXi 서버로 볼륨을 복구한 업무 수행 사례입니다.
         </p>
         <p>
-          FalconStor NSS의 Block-level Replication 및 Snapshot 기능을 활용해 빠르게 데이터 접근성을 회복하고
+          FalconStor Network Storage Service의 Block-level Replication 및 Snapshot 기능을 활용해 빠르게 데이터 접근성을 회복하고
           서비스 중단 시간을 최소화한 것이 핵심 목표였습니다.
         </p>
       </section>
@@ -153,7 +153,7 @@
       <section>
         <h2>구성도</h2>
         <div class="image-container">
-          <img src="../PPT/NSS DR.png" alt="FalconStor NSS DR 복구 구성도" />
+          <img src="../PPT/NSS DR.png" alt="FalconStor Network Storage Service DR 복구 구성도" />
         </div>
       </section>
 
@@ -161,7 +161,7 @@
         <h2>작업 목표</h2>
         <ul>
           <li>도곡동 본사에 발생한 장애로 인한 ESXI 서버 무력화 상황 가정</li>
-          <li>본사와 Replication 구성 된 삼각지 DR 센터 FalconStor NSS 백업 스토리지에 저장된 LUN/Volume 스냅샷 확보</li>
+          <li>본사와 Replication 구성 된 삼각지 DR 센터 FalconStor Network Storage Service 백업 스토리지에 저장된 LUN/Volume 스냅샷 확보</li>
           <li>삼각지 DR 센터의 ESXi 서버로 해당 스냅샷 볼륨을 재매핑</li>
           <li>VMware에서 VM 복구 및 정상 부팅 확인</li>
           <li>서비스 다운타임 최소화 및 데이터 무결성 검증</li>
@@ -175,7 +175,7 @@
         <div class="highlight-box">
           <ul>
             <li>VMware ESXi Cluster</li>
-            <li>FalconStor NSS Production Node</li>
+            <li>FalconStor Network Storage Service Production Node</li>
             <li>FC(Fibre Channel) 기반 Storage Volume</li>
             <li>운영 중인 주요 VM(업무 서버, DB, AD 포함)</li>
           </ul>
@@ -184,14 +184,14 @@
         <h3>DR Site (삼각지 DR센터)</h3>
         <ul>
           <li>VMware ESXi 별도 DR Cluster</li>
-          <li>FalconStor NSS DR Node</li>
+          <li>FalconStor Network Storage Service DR Node</li>
           <li>Replication Volume 존재</li>
           <li>DR 네트워크(Tunnel 또는 MPLS)를 통한 동기/비동기 백업</li>
         </ul>
 
         <h3>주요 기술 요소</h3>
         <ul>
-          <li>FalconStor NSS Volume Snapshot</li>
+          <li>FalconStor Network Storage Service Volume Snapshot</li>
           <li>Block-level Replication</li>
           <li>FC(Fibre Channel) LUN Mapping</li>
           <li>VMware ESXi Datastore Resignature & VMX 재등록</li>
@@ -209,10 +209,10 @@
           <li>DR 복구 절차 진행 결정</li>
         </ul>
 
-        <h3>2. FalconStor NSS 백업 스냅샷 확인</h3>
+        <h3>2. FalconStor Network Storage Service 백업 스냅샷 확인</h3>
         <div class="highlight-box">
           <ul>
-            <li>FalconStor NSS 관리 콘솔 접속</li>
+            <li>FalconStor Network Storage Service 관리 콘솔 접속</li>
             <li>해당 ESXi datastore가 포함된 Volume 선정</li>
             <li>최근 성공적으로 생성된 Snapshot/Replica 확인</li>
             <li>DR ESXi에 매핑 가능한 상태임을 검증</li>
@@ -222,7 +222,7 @@
         <h3>3. DR(삼각지) 환경으로 Volume 재매핑</h3>
         <p><b>수행 내용:</b></p>
         <ul>
-          <li>DR 사이트에 있는 FalconStor NSS 장비에서 Replica Volume 선택</li>
+          <li>DR 사이트에 있는 FalconStor Network Storage Service 장비에서 Replica Volume 선택</li>
           <li>ESXi DR 서버에 FC Target / LUN Mapping 구성</li>
           <li>ESXi에서 rescan하여 Datastore 인식 여부 확인</li>
         </ul>
@@ -293,7 +293,7 @@
         <h2>작업 성과</h2>
         <ul>
           <li>ESXi 장애 발생 후 1시간 이내에 DR 운영환경 확보</li>
-          <li>FalconStor NSS 기반 Snapshot/Replica 기술 능숙하게 사용</li>
+          <li>FalconStor Network Storage Service 기반 Snapshot/Replica 기술 능숙하게 사용</li>
           <li>고객사의 핵심 업무 서비스 중단 시간 최소화</li>
           <li>VMware + Storage + DR 구성을 end-to-end로 복구 성공</li>
           <li>DR 매뉴얼 문서화 및 고객사 인수인계 완료</li>
@@ -303,7 +303,7 @@
       <section>
         <h2>학습 및 경험</h2>
         <ul>
-          <li>FalconStor NSS Block-level Replication 구조 이해</li>
+          <li>FalconStor Network Storage Service Block-level Replication 구조 이해</li>
           <li>Enterprise 스토리지 기반 DR 복구 절차 숙련</li>
           <li>FC multipath, LUN mapping 기술</li>
           <li>VMware ESXi Datastore Resignature 및 VM 복구</li>
