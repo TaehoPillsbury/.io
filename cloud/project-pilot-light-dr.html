@@ -146,6 +146,23 @@
       line-height: 1.8;
       overflow-x: auto;
     }
+    .architecture-image {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #1f2937;
+      border-radius: 0.5rem;
+      margin: 1.5rem 0;
+      background: #020617;
+      padding: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+    .architecture-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 0.25rem;
+    }
     .step-box {
       background: #020617;
       border: 1px solid #374151;
@@ -216,67 +233,13 @@
           <li><strong>DR 리전 (ap-northeast-1, 도쿄)</strong>: Pilot Light 상태로 최소 리소스만 운영, 장애 시 즉시 확장 가능한 구조</li>
         </ul>
 
-        <h3>2.2 아키텍처 다이어그램 (텍스트 기반)</h3>
-        <div class="architecture-diagram">
-<strong>글로벌 레이어 (Global Layer)</strong>
-┌─────────────────────────────────────────────────────────┐
-│  Route 53 (Failover Routing)                           │
-│  - Health Check: 메인 리전 ALB 헬스 체크               │
-│  - Primary: 메인 리전 레코드 (정상 시)                 │
-│  - Secondary: DR 리전 레코드 (Failover)                │
-└───────────────────┬─────────────────────────────────────┘
-                    │
-        ┌───────────┴───────────┐
-        │                       │
-<strong>메인 리전 (Primary)</strong>    <strong>DR 리전 (Pilot Light)</strong>
-┌───────────────────┐    ┌───────────────────┐
-│ CloudFront        │    │ CloudFront        │
-│ Origin Group:     │    │ Origin Group:     │
-│ - Main S3 (Primary)│    │ - DR S3 (Primary) │
-│ - DR S3 (Failover)│    │ - Main S3 (Failover)│
-└───────┬───────────┘    └───────┬───────────┘
-        │                        │
-┌───────┴───────────┐    ┌───────┴───────────┐
-│ ALB               │    │ ALB (최소 구성)   │
-│ - Target Group    │    │ - Target Group    │
-│   (Active)        │    │   (Standby)       │
-└───────┬───────────┘    └───────┬───────────┘
-        │                        │
-┌───────┴───────────┐    ┌───────┴───────────┐
-│ Auto Scaling Group│    │ Auto Scaling Group│
-│ - Desired: 5      │    │ - Desired: 0      │
-│ - Min: 3          │    │ - Min: 0          │
-│ - AMI: 최신 버전  │    │ - AMI: Cross-Region Copy│
-└───────┬───────────┘    └───────┬───────────┘
-        │                        │
-┌───────┴───────────┐    ┌───────┴───────────┐
-│ DynamoDB          │    │ DynamoDB          │
-│ Global Tables     │◄───┤ Global Tables     │
-│ (실시간 복제)     │    │ (실시간 복제)     │
-└───────────────────┘    └───────────────────┘
-        │                        │
-┌───────┴───────────┐    ┌───────┴───────────┐
-│ S3 (Main)         │───►│ S3 (DR)           │
-│ Cross-Region      │    │ Cross-Region      │
-│ Replication       │    │ Replication       │
-└───────────────────┘    └───────────────────┘
-
-<strong>오케스트레이션 레이어</strong>
-┌─────────────────────────────────────────────────────────┐
-│  Step Functions (DR Workflow)                           │
-│  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐    │
-│  │Step 0│→ │Step 1│→ │Step 2│→ │Step 3│→ │Step 4│    │
-│  │Lock  │  │Network│  │Scale │  │ALB   │  │Route53│   │
-│  │      │  │      │  │Out   │  │      │  │      │    │
-│  └──────┘  └──────┘  └──────┘  └──────┘  └──────┘    │
-└───────────────────┬─────────────────────────────────────┘
-                    │
-┌───────────────────┴─────────────────────────────────────┐
-│  EventBridge + CloudWatch Alarm                         │
-│  - Health Check 실패 감지                               │
-│  - Step Functions 실행 트리거                           │
-└─────────────────────────────────────────────────────────┘
+        <h3>2.2 아키텍처 다이어그램</h3>
+        <div class="architecture-image">
+          <img src="pilot-light-dr-architecture.png" alt="AWS Pilot Light Disaster Recovery Architecture - Observation Region (us-east-1), Main Region, DR Region 구조 및 Step Functions 기반 DR Workflow" />
         </div>
+        <p style="text-align: center; color: #9ca3af; font-size: 0.9rem; margin-top: 0.5rem;">
+          <em>Observation Region (us-east-1)을 포함한 글로벌 레이어, 메인 리전, DR 리전(Pilot Light 상태) 및 Step Functions 기반 자동화 Workflow</em>
+        </p>
 
         <h3>2.3 컴퓨트 계층</h3>
         <ul>
